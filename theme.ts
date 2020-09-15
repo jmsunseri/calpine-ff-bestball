@@ -1,6 +1,4 @@
-import { ThemeType } from 'grommet';
-
-const theme: ThemeType = {
+const theme: any = {
   rounding: 4,
   spacing: 24,
   defaultMode: 'light',
