@@ -49,72 +49,56 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Qb.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Qb.name}</TableCell>
           <TableCell>QB</TableCell>
           <TableCell>{result?.Qb.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Rb1.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Rb1.name}</TableCell>
           <TableCell>RB</TableCell>
           <TableCell>{result?.Rb1.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Rb2.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Rb2.name}</TableCell>
           <TableCell>RB</TableCell>
           <TableCell>{result?.Rb2.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Wr1.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Wr1.name}</TableCell>
           <TableCell>WR</TableCell>
           <TableCell>{result?.Wr1.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Wr2.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Wr2.name}</TableCell>
           <TableCell>WR</TableCell>
           <TableCell>{result?.Wr2.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Wr3.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Wr3.name}</TableCell>
           <TableCell>WR</TableCell>
           <TableCell>{result?.Wr3.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Te.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Te.name}</TableCell>
           <TableCell>TE</TableCell>
           <TableCell>{result?.Te.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.Flex.name}</strong>
-          </TableCell>
+          <TableCell scope='row'>{result?.Flex.name}</TableCell>
           <TableCell>Flex</TableCell>
           <TableCell>{result?.Flex.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>{result?.SuperFlex.name}</strong>
+          <TableCell scope='row' border='bottom'>
+            {result?.SuperFlex.name}
           </TableCell>
-          <TableCell>Super Flex</TableCell>
-          <TableCell>{result?.SuperFlex.total.toFixed(2)}</TableCell>
+          <TableCell border='bottom'>Super Flex</TableCell>
+          <TableCell border='bottom'>
+            {result?.SuperFlex.total.toFixed(2)}
+          </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
-            <strong>Total</strong>
-          </TableCell>
+          <TableCell scope='row'>Total</TableCell>
           <TableCell></TableCell>
           <TableCell>{getStartingLineupTotal(result).toFixed(2)}</TableCell>
         </TableRow>
@@ -136,21 +120,19 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
         </TableRow>
       </TableHeader>
       <TableBody>
-        {result?.Bench.map((benchPlayer: PlayerResult) => (
+        {result?.Bench.map((benchPlayer: PlayerResult, index: number) => (
           <TableRow key={benchPlayer.name}>
-            <TableCell scope='row'>
-              <strong>{benchPlayer.name}</strong>
-            </TableCell>
+            <TableCell scope='row'>{benchPlayer.name}</TableCell>
             <TableCell>{benchPlayer.position}</TableCell>
             <TableCell>{benchPlayer.total.toFixed(2)}</TableCell>
           </TableRow>
         ))}
         <TableRow>
-          <TableCell scope='row'>
-            <strong>Total</strong>
+          <TableCell border='top' scope='row'>
+            Total
           </TableCell>
-          <TableCell></TableCell>
-          <TableCell>
+          <TableCell border='top'></TableCell>
+          <TableCell border='top'>
             {result?.Bench.reduce(
               (total: number, benchPlayer: PlayerResult) =>
                 total + benchPlayer.total,
