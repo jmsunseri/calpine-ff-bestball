@@ -282,20 +282,16 @@ const convertEspnResult = (espnResult: EspnResult) => {
   return result;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  fetch(statsUrl, {
-    headers: {
-      cookie,
-    },
-  })
-    .then((value: Response) => {
-      value
-        .json()
-        .then((json: EspnResult) =>
-          res.status(200).json(convertEspnResult(json))
-        );
-    })
-    .catch(() => {
-      res.status(500);
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const response = await fetch(statsUrl, {
+      headers: {
+        cookie,
+      },
     });
+    const json = await response.json();
+    res.status(200).json(convertEspnResult(json));
+  } catch (error) {
+    res.status(500);
+  }
 };
