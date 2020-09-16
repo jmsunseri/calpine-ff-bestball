@@ -1,66 +1,56 @@
 import React, { FC, useState, useEffect } from 'react';
-import {
-  Box,
-  Heading,
-  Grommet,
-  Select,
-  Table,
-  TableHeader,
-  TableRow,
-  TableCell,
-  TableBody,
-  Avatar,
-} from 'grommet';
+import { Box, Heading, Grommet, Select } from 'grommet';
 import AppBar from '../components/AppBar/AppBar';
 import theme from '../theme';
-import { Team, WeeklyResult, PlayerResult } from './api/stats';
+import { Team } from './api/stats';
 import Standings from '../components/Standings/Standings';
 import WeekStats from '../components/WeekStats/WeekStats';
+import useEspn from '../hooks/useEspn';
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 const Home: FC = () => {
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [team, setTeam] = useState<Team>();
-  const [selectedResult, setSelectedResult] = useState<WeeklyResult>();
+  const [teamGuid, setTeamGuid] = useState<string>();
   const [selectedWeek, setSelectedWeek] = useState<number>();
+  const { teams, refresh } = useEspn({ weekId: selectedWeek });
 
+  const selectedResult = teams
+    .find((x) => x.guid === teamGuid)
+    ?.weeklyResults.find((x) => x.WeekId === selectedWeek);
+
+  // initialization
   useEffect(() => {
-    fetch('/api/stats').then((response: Response) => {
-      response.json().then((values: Team[]) => {
-        setTeams(values);
-        console.log('fetched');
-      });
-    });
+    console.log('useEffect');
+    const w = localStorage.getItem('week');
+    const t = localStorage.getItem('team');
+    if (w) {
+      setSelectedWeek(+w);
+    } else {
+      setSelectedWeek(1);
+    }
+    if (t) {
+      console.log('setting team id ' + t);
+      setTeamGuid(t);
+    }
 
     const timer = setTimeout(() => {
-      fetch('/api/stats').then((response: Response) => {
-        response.json().then((values: Team[]) => {
-          setTeams(values);
-          console.log('fetched on timer');
-        });
-      });
+      refresh();
+      console.log('refresh');
     }, 30000);
     return () => {
       clearTimeout(timer);
     };
-  });
-
-  const getFullName = (team: Team): string => {
-    return `${team.firstName} ${team.lastName}`;
-  };
+  }, []);
 
   const onTeamSelect = (value: { option: Team }) => {
-    setSelectedResult(
-      value.option.weeklyResults[value.option.weeklyResults.length - 1]
-    );
+    console.log('team selected ', value.option);
+    setTeamGuid(value.option.guid);
+    localStorage.setItem('team', value.option.guid);
   };
 
   const onWeekOptionSelected = (value: { option: number }) => {
-    setSelectedResult(
-      team.weeklyResults.find((x) => x.WeekId === value.option)
-    );
     setSelectedWeek(value.option);
+    localStorage.setItem('week', `${value.option}`);
   };
 
   return (
@@ -76,7 +66,6 @@ const Home: FC = () => {
           box-sizing: border-box;
         }
       `}</style>
-
       <Box fill>
         <AppBar>
           <Heading level='3' margin='none'>
@@ -89,14 +78,14 @@ const Home: FC = () => {
             <Box direction='row' gap='small'>
               <Select
                 options={teams}
-                labelKey={getFullName}
+                labelKey='teamName'
                 onChange={onTeamSelect}
                 placeholder='Select User'
-                value={team}
-                valueKey='id'
+                value={teams.find((x) => x.guid === teamGuid)}
+                valueKey='guid'
               />
               <Select
-                value={`${selectedWeek}`}
+                value={selectedWeek}
                 options={weekOptions}
                 onChange={onWeekOptionSelected}
                 placeholder='Select Week'
