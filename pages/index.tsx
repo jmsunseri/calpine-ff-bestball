@@ -16,7 +16,7 @@ const Home: FC = () => {
 
   const selectedResult = teams
     .find((x) => x.guid === teamGuid)
-    ?.weeklyResults.find((x) => x.WeekId === selectedWeek);
+    ?.weeklyResults.find((x) => x.weekId === selectedWeek);
 
   // initialization
   useEffect(() => {

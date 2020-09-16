@@ -25,17 +25,17 @@ export interface PlayerResult {
 }
 
 export interface WeeklyResult {
-  WeekId: number;
-  Qb?: PlayerResult;
-  Rb1?: PlayerResult;
-  Rb2?: PlayerResult;
-  Wr1?: PlayerResult;
-  Wr2?: PlayerResult;
-  Wr3?: PlayerResult;
-  Te?: PlayerResult;
-  Flex?: PlayerResult;
-  SuperFlex?: PlayerResult;
-  Bench: PlayerResult[];
+  weekId: number;
+  qb?: PlayerResult;
+  rb1?: PlayerResult;
+  rb2?: PlayerResult;
+  wr1?: PlayerResult;
+  wr2?: PlayerResult;
+  wr3?: PlayerResult;
+  te?: PlayerResult;
+  flex?: PlayerResult;
+  superFlex?: PlayerResult;
+  bench: PlayerResult[];
 }
 
 interface EspnMember {
@@ -140,97 +140,97 @@ const mapToWeeklyResult = (
   playerResult: PlayerResult
 ) => {
   if (playerResult.position == Position.QB) {
-    if (!weeklyResult.Qb) {
+    if (!weeklyResult.qb) {
       return {
         ...weeklyResult,
-        Qb: playerResult,
+        qb: playerResult,
       };
     }
-    if (!weeklyResult.SuperFlex) {
+    if (!weeklyResult.superFlex) {
       return {
         ...weeklyResult,
-        SuperFlex: playerResult,
+        superFlex: playerResult,
       };
     }
   } else if (playerResult.position == Position.RB) {
-    if (!weeklyResult.Rb1) {
+    if (!weeklyResult.rb1) {
       return {
         ...weeklyResult,
-        Rb1: playerResult,
+        rb1: playerResult,
       };
     }
-    if (!weeklyResult.Rb2) {
+    if (!weeklyResult.rb2) {
       return {
         ...weeklyResult,
-        Rb2: playerResult,
+        rb2: playerResult,
       };
     }
-    if (!weeklyResult.Flex) {
+    if (!weeklyResult.flex) {
       return {
         ...weeklyResult,
-        Flex: playerResult,
+        flex: playerResult,
       };
     }
-    if (!weeklyResult.SuperFlex) {
+    if (!weeklyResult.superFlex) {
       return {
         ...weeklyResult,
-        SuperFlex: playerResult,
+        superFlex: playerResult,
       };
     }
   } else if (playerResult.position == Position.WR) {
-    if (!weeklyResult.Wr1) {
+    if (!weeklyResult.wr1) {
       return {
         ...weeklyResult,
-        Wr1: playerResult,
+        wr1: playerResult,
       };
     }
-    if (!weeklyResult.Wr2) {
+    if (!weeklyResult.wr2) {
       return {
         ...weeklyResult,
-        Wr2: playerResult,
+        wr2: playerResult,
       };
     }
-    if (!weeklyResult.Wr3) {
+    if (!weeklyResult.wr3) {
       return {
         ...weeklyResult,
-        Wr3: playerResult,
+        wr3: playerResult,
       };
     }
-    if (!weeklyResult.Flex) {
+    if (!weeklyResult.flex) {
       return {
         ...weeklyResult,
-        Flex: playerResult,
+        flex: playerResult,
       };
     }
-    if (!weeklyResult.SuperFlex) {
+    if (!weeklyResult.superFlex) {
       return {
         ...weeklyResult,
-        SuperFlex: playerResult,
+        superFlex: playerResult,
       };
     }
   } else if (playerResult.position == Position.TE) {
-    if (!weeklyResult.Te) {
+    if (!weeklyResult.te) {
       return {
         ...weeklyResult,
-        Te: playerResult,
+        te: playerResult,
       };
     }
-    if (!weeklyResult.Flex) {
+    if (!weeklyResult.flex) {
       return {
         ...weeklyResult,
-        Flex: playerResult,
+        flex: playerResult,
       };
     }
-    if (!weeklyResult.SuperFlex) {
+    if (!weeklyResult.superFlex) {
       return {
         ...weeklyResult,
-        SuperFlex: playerResult,
+        superFlex: playerResult,
       };
     }
   }
   return {
     ...weeklyResult,
-    Bench: [...weeklyResult.Bench, playerResult],
+    bench: [...weeklyResult.bench, playerResult],
   };
 };
 
@@ -256,16 +256,16 @@ const convertEspnResult = (espnResult: EspnResult) => {
               .map(mapToPlayerResult)
               .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
               .reduce(mapToWeeklyResult, {
-                WeekId: em.matchupPeriodId,
-                Bench: [],
+                weekId: em.matchupPeriodId,
+                bench: [],
               });
           }
           return em.home.rosterForCurrentScoringPeriod.entries
             .map(mapToPlayerResult)
             .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
             .reduce(mapToWeeklyResult, {
-              WeekId: em.matchupPeriodId,
-              Bench: [],
+              weekId: em.matchupPeriodId,
+              bench: [],
             });
         }
       );

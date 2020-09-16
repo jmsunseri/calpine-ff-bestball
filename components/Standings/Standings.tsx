@@ -24,15 +24,15 @@ interface ITeamStanding {
 const getStartingLineupTotal = (result?: WeeklyResult): number => {
   if (result) {
     return (
-      result.Qb.total +
-      result.Rb1.total +
-      result.Rb2.total +
-      result.Wr1.total +
-      result.Wr2.total +
-      result.Wr3.total +
-      result.Te.total +
-      result.Flex.total +
-      result.SuperFlex.total
+      result.qb.total +
+      result.rb1.total +
+      result.rb2.total +
+      result.wr1.total +
+      result.wr2.total +
+      result.wr3.total +
+      result.te.total +
+      result.flex.total +
+      result.superFlex.total
     );
   }
   return 0;

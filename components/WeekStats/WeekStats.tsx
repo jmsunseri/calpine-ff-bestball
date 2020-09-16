@@ -16,15 +16,15 @@ interface IWeekStatsProps {
 const getStartingLineupTotal = (result?: WeeklyResult): number => {
   if (result) {
     return (
-      result.Qb.total +
-      result.Rb1.total +
-      result.Rb2.total +
-      result.Wr1.total +
-      result.Wr2.total +
-      result.Wr3.total +
-      result.Te.total +
-      result.Flex.total +
-      result.SuperFlex.total
+      result.qb.total +
+      result.rb1.total +
+      result.rb2.total +
+      result.wr1.total +
+      result.wr2.total +
+      result.wr3.total +
+      result.te.total +
+      result.flex.total +
+      result.superFlex.total
     );
   }
   return 0;
@@ -49,52 +49,52 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell scope='row'>{result?.Qb.name}</TableCell>
+          <TableCell scope='row'>{result?.qb.name}</TableCell>
           <TableCell>QB</TableCell>
-          <TableCell>{result?.Qb.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.qb.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Rb1.name}</TableCell>
+          <TableCell scope='row'>{result?.rb1.name}</TableCell>
           <TableCell>RB</TableCell>
-          <TableCell>{result?.Rb1.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.rb1.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Rb2.name}</TableCell>
+          <TableCell scope='row'>{result?.rb2.name}</TableCell>
           <TableCell>RB</TableCell>
-          <TableCell>{result?.Rb2.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.rb2.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Wr1.name}</TableCell>
+          <TableCell scope='row'>{result?.wr1.name}</TableCell>
           <TableCell>WR</TableCell>
-          <TableCell>{result?.Wr1.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.wr1.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Wr2.name}</TableCell>
+          <TableCell scope='row'>{result?.wr2.name}</TableCell>
           <TableCell>WR</TableCell>
-          <TableCell>{result?.Wr2.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.wr2.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Wr3.name}</TableCell>
+          <TableCell scope='row'>{result?.wr3.name}</TableCell>
           <TableCell>WR</TableCell>
-          <TableCell>{result?.Wr3.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.wr3.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Te.name}</TableCell>
+          <TableCell scope='row'>{result?.te.name}</TableCell>
           <TableCell>TE</TableCell>
-          <TableCell>{result?.Te.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.te.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>{result?.Flex.name}</TableCell>
+          <TableCell scope='row'>{result?.flex.name}</TableCell>
           <TableCell>Flex</TableCell>
-          <TableCell>{result?.Flex.total.toFixed(2)}</TableCell>
+          <TableCell>{result?.flex.total.toFixed(2)}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row' border='bottom'>
-            {result?.SuperFlex.name}
+            {result?.superFlex.name}
           </TableCell>
           <TableCell border='bottom'>Super Flex</TableCell>
           <TableCell border='bottom'>
-            {result?.SuperFlex.total.toFixed(2)}
+            {result?.superFlex.total.toFixed(2)}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -120,7 +120,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
         </TableRow>
       </TableHeader>
       <TableBody>
-        {result?.Bench.map((benchPlayer: PlayerResult, index: number) => (
+        {result?.bench.map((benchPlayer: PlayerResult, index: number) => (
           <TableRow key={benchPlayer.name}>
             <TableCell scope='row'>{benchPlayer.name}</TableCell>
             <TableCell>{benchPlayer.position}</TableCell>
@@ -133,11 +133,13 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell border='top'></TableCell>
           <TableCell border='top'>
-            {result?.Bench.reduce(
-              (total: number, benchPlayer: PlayerResult) =>
-                total + benchPlayer.total,
-              0
-            ).toFixed(2)}
+            {result?.bench
+              .reduce(
+                (total: number, benchPlayer: PlayerResult) =>
+                  total + benchPlayer.total,
+                0
+              )
+              .toFixed(2)}
           </TableCell>
         </TableRow>
       </TableBody>
