@@ -72,10 +72,11 @@ const Home: FC = () => {
             Calpine IT Fantasy Football Best Ball Calculator
           </Heading>
         </AppBar>
-        <Box direction='row' flex gap='large' margin='small'>
+        <Box direction='row-responsive' flex margin='small' gap='large'>
           <Standings teams={teams} />
-          <Box direction='column' flex gap='small'>
-            <Box direction='row' gap='small'>
+          <Box direction='column' flex width={{ min: '400px' }}>
+            <Heading level={3}>Team Results</Heading>
+            <Box direction='row' pad='xxsmall' gap='small'>
               <Select
                 options={teams}
                 labelKey='teamName'
