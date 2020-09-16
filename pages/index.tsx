@@ -72,9 +72,15 @@ const Home: FC = () => {
             Calpine IT Fantasy Football Best Ball Calculator
           </Heading>
         </AppBar>
-        <Box direction='row-responsive' flex margin='small' gap='large'>
+        <Box
+          direction='row-responsive'
+          justify='center'
+          flex
+          margin='small'
+          gap='large'
+        >
           <Standings teams={teams} />
-          <Box direction='column' flex width={{ min: '400px' }}>
+          <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
             <Heading level={3}>Team Results</Heading>
             <Box direction='row' pad='xxsmall' gap='small'>
               <Select
@@ -86,8 +92,8 @@ const Home: FC = () => {
                 valueKey='guid'
               />
               <Select
-                value={selectedWeek}
-                options={weekOptions}
+                value={`${selectedWeek}`}
+                options={weekOptions.map((x) => `${x}`)}
                 onChange={onWeekOptionSelected}
                 placeholder='Select Week'
               />
