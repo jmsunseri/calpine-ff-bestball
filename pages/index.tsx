@@ -73,7 +73,6 @@ const Home: FC = () => {
           margin='small'
           gap='large'
         >
-          <Standings teams={result.teams} />
           <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
             <Heading level={3}>Team Results</Heading>
             <Box direction='row' pad='xxsmall' gap='small'>
@@ -94,6 +93,7 @@ const Home: FC = () => {
             </Box>
             <WeekStats result={selectedResult} />
           </Box>
+          <Standings teams={result.teams} />
         </Box>
       </Box>
     </Grommet>
