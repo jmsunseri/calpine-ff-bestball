@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { WeeklyResult, PlayerResult } from '../../pages/api/stats';
+import { Position } from '../../pages/api/stats';
 import {
   Heading,
   TableBody,
@@ -28,6 +29,19 @@ const getStartingLineupTotal = (result?: WeeklyResult): number => {
     );
   }
   return 0;
+};
+
+const getPostion = (pos: Position): string => {
+  switch (pos) {
+    case Position.QB:
+      return 'QB';
+    case Position.RB:
+      return 'RB';
+    case Position.WR:
+      return 'WR';
+    default:
+      return 'TE';
+  }
 };
 
 const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
@@ -123,7 +137,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
         {result?.bench.map((benchPlayer: PlayerResult, index: number) => (
           <TableRow key={benchPlayer.name}>
             <TableCell scope='row'>{benchPlayer.name}</TableCell>
-            <TableCell>{benchPlayer.position}</TableCell>
+            <TableCell>{getPostion(benchPlayer.position)}</TableCell>
             <TableCell>{benchPlayer.total.toFixed(2)}</TableCell>
           </TableRow>
         ))}

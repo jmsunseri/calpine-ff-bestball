@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Box, Heading, Grommet, Select } from 'grommet';
+import { Box, Heading, Grommet, Select, Text } from 'grommet';
 import AppBar from '../components/AppBar/AppBar';
 import theme from '../theme';
 import { Team } from './api/stats';
@@ -12,15 +12,14 @@ const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 const Home: FC = () => {
   const [teamGuid, setTeamGuid] = useState<string>();
   const [selectedWeek, setSelectedWeek] = useState<number>();
-  const { teams, refresh } = useEspn({ weekId: selectedWeek });
+  const { result, refresh } = useEspn({ weekId: selectedWeek });
 
-  const selectedResult = teams
+  const selectedResult = result.teams
     .find((x) => x.guid === teamGuid)
     ?.weeklyResults.find((x) => x.weekId === selectedWeek);
 
   // initialization
   useEffect(() => {
-    console.log('useEffect');
     const w = localStorage.getItem('week');
     const t = localStorage.getItem('team');
     if (w) {
@@ -29,27 +28,21 @@ const Home: FC = () => {
       setSelectedWeek(1);
     }
     if (t) {
-      console.log('setting team id ' + t);
       setTeamGuid(t);
     }
 
-    const timer = setTimeout(() => {
+    setInterval(() => {
       refresh();
-      console.log('refresh');
-    }, 30000);
-    return () => {
-      clearTimeout(timer);
-    };
+    }, 15000);
   }, []);
 
   const onTeamSelect = (value: { option: Team }) => {
-    console.log('team selected ', value.option);
     setTeamGuid(value.option.guid);
     localStorage.setItem('team', value.option.guid);
   };
 
   const onWeekOptionSelected = (value: { option: number }) => {
-    setSelectedWeek(value.option);
+    setSelectedWeek(+value.option);
     localStorage.setItem('week', `${value.option}`);
   };
 
@@ -71,6 +64,7 @@ const Home: FC = () => {
           <Heading level='3' margin='none'>
             Calpine IT Fantasy Football Best Ball Calculator
           </Heading>
+          <Text>Last Updated: {result?.updatedDate?.format('h:mm:ss A')}</Text>
         </AppBar>
         <Box
           direction='row-responsive'
@@ -79,16 +73,16 @@ const Home: FC = () => {
           margin='small'
           gap='large'
         >
-          <Standings teams={teams} />
+          <Standings teams={result.teams} />
           <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
             <Heading level={3}>Team Results</Heading>
             <Box direction='row' pad='xxsmall' gap='small'>
               <Select
-                options={teams}
+                options={result.teams}
                 labelKey='teamName'
                 onChange={onTeamSelect}
                 placeholder='Select User'
-                value={teams.find((x) => x.guid === teamGuid)}
+                value={result.teams.find((x) => x.guid === teamGuid)}
                 valueKey='guid'
               />
               <Select

@@ -1,24 +1,25 @@
-import { Team } from '../pages/api/stats';
+import { IResult } from '../pages/api/stats';
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 
 interface IUseEspnProps {
   weekId: number;
 }
 
 interface IUseEspnResult {
-  teams: Team[];
+  result: IResult;
   refresh: () => void;
 }
 
 type UseEspnHook = (props: IUseEspnProps) => IUseEspnResult;
 
-const fetchStats = (): Promise<Team[]> =>
-  new Promise<Team[]>((resolve, reject) => {
+const fetchStats = (): Promise<IResult> =>
+  new Promise<IResult>((resolve, reject) => {
     fetch('/api/stats')
       .then((response: Response) => {
         response
           .json()
-          .then((values: Team[]) => {
+          .then((values: IResult) => {
             resolve(values);
           })
           .catch((reason: any) => reject(reason));
@@ -27,11 +28,14 @@ const fetchStats = (): Promise<Team[]> =>
   });
 
 const useEspn: UseEspnHook = ({ weekId }: IUseEspnProps) => {
-  const [results, setResults] = useState<Team[]>([]);
+  const [result, setResult] = useState<IResult>({ teams: [] });
 
   const refresh = () => {
-    fetchStats().then((teams: Team[]) => {
-      setResults(teams);
+    fetchStats().then((r: IResult) => {
+      setResult({
+        ...r,
+        updatedDate: dayjs(r.updatedDate),
+      });
     });
   };
 
@@ -39,7 +43,7 @@ const useEspn: UseEspnHook = ({ weekId }: IUseEspnProps) => {
     refresh();
   }, []);
 
-  return { teams: results, refresh };
+  return { result, refresh };
 };
 
 export default useEspn;
