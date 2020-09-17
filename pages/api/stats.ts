@@ -327,6 +327,7 @@ const getTeams = async (weekId: number): Promise<Team[]> => {
 };
 
 const repopulateCache = async (): Promise<Team[]> => {
+  console.log('repopulating', dayjs().format('hh:mm:ss'));
   var now = dayjs();
   const promise = new Promise<Team[]>((resolve, reject) => {
     Promise.all(
@@ -359,9 +360,9 @@ const repopulateCache = async (): Promise<Team[]> => {
   return promise;
 };
 
-const lruCache = new Lru(1);
+const lruCache = new Lru({ maxAge: 86400000 });
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const stats = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const cache: IResult = lruCache.get('cache') as IResult;
     var now = dayjs();
@@ -404,3 +405,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500);
   }
 };
+
+export default stats;
