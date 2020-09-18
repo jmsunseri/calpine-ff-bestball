@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Lru from 'lru-cache';
 import dayjs, { Dayjs } from 'dayjs';
 
+import teamsCache from '../../cache';
+
 // const statsUrl =
 //   'https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020/segments/0/leagues/1062294?rosterForTeamId=6&view=mDraftDetail&view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav';
 const cookie =
@@ -368,10 +370,16 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
     var now = dayjs();
 
     if (!cache) {
-      const teams = await repopulateCache();
-      const newCache: IResult = { teams, updatedDate: dayjs() };
-      lruCache.set('cache', newCache);
-      res.status(200).json(newCache);
+      if (process.env.NODE_ENV === 'production') {
+        const teams = await repopulateCache();
+        const newCache: IResult = { teams, updatedDate: dayjs() };
+        lruCache.set('cache', newCache);
+        res.status(200).json(newCache);
+      } else {
+        const newCache: IResult = { teams: teamsCache, updatedDate: dayjs() };
+        lruCache.set('cache', newCache);
+        res.status(200).json(newCache);
+      }
     } else if (cache.updatedDate.add(15, 'second') < now) {
       const weekId = schedule.find(
         (sch: IScheduleItem) => sch.start < now && sch.stop > now
