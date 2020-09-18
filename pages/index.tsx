@@ -6,6 +6,7 @@ import theme from '../theme';
 import { Team } from './api/stats';
 import useEspn from '../hooks/useEspn';
 import BuyMeCoffee from '../components/BuyMeCoffee/BuyMeCoffee';
+import LineChart from '../components/LineChart/LineChart';
 
 const WeekStats = dynamic(() => import('../components/WeekStats/WeekStats'), {
   ssr: false,
@@ -122,6 +123,17 @@ const Home: FC = () => {
             <WeekStats result={selectedResult} />
           </Box>
           <Standings teams={result.teams} />
+        </Box>
+        <Box
+          direction='row-responsive'
+          justify='center'
+          flex
+          margin='small'
+          gap='large'
+        >
+          <div style={{ width: '50%', height: 500 }}>
+            <LineChart teams={result.teams} />
+          </div>
         </Box>
       </Box>
     </Grommet>

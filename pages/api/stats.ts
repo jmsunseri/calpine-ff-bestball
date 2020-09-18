@@ -53,6 +53,8 @@ const schedule: IScheduleItem[] = [
   { weekId: 16, start: dayjs('2020-12-31'), stop: dayjs('2021-01-07') },
 ];
 
+export { schedule };
+
 export interface WeeklyResult {
   weekId: number;
   qb?: PlayerResult;
