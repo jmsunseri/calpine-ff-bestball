@@ -17,10 +17,24 @@ const Standings = dynamic(() => import('../components/Standings/Standings'), {
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
+const GlobalStyles: FC = () => (
+  <style jsx global>{`
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+  `}</style>
+);
+
 const Home: FC = () => {
   const [teamGuid, setTeamGuid] = useState<string>();
   const [selectedWeek, setSelectedWeek] = useState<number>();
-  const { result, refresh } = useEspn({ weekId: selectedWeek });
+  const { result, refresh } = useEspn();
 
   const selectedResult = result.teams
     .find((x) => x.guid === teamGuid)
@@ -56,17 +70,7 @@ const Home: FC = () => {
 
   return (
     <Grommet theme={theme}>
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+      <GlobalStyles />
 
       <Box fill>
         <AppBar>

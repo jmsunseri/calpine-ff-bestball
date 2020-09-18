@@ -2,16 +2,12 @@ import { IResult } from '../pages/api/stats';
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 
-interface IUseEspnProps {
-  weekId: number;
-}
-
 interface IUseEspnResult {
   result: IResult;
   refresh: () => void;
 }
 
-type UseEspnHook = (props: IUseEspnProps) => IUseEspnResult;
+type UseEspnHook = () => IUseEspnResult;
 
 const fetchStats = (): Promise<IResult> =>
   new Promise<IResult>((resolve, reject) => {
@@ -27,7 +23,7 @@ const fetchStats = (): Promise<IResult> =>
       .catch((reason: any) => reject(reason));
   });
 
-const useEspn: UseEspnHook = ({ weekId }: IUseEspnProps) => {
+const useEspn: UseEspnHook = () => {
   const [result, setResult] = useState<IResult>({ teams: [] });
 
   const refresh = () => {
