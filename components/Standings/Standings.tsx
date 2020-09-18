@@ -54,6 +54,9 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
           <TableCell scope='col' border='bottom'>
             Score
           </TableCell>
+          <TableCell scope='col' border='bottom'>
+            $$$
+          </TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -61,7 +64,7 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
           ?.map(
             (t: Team): ITeamStanding => ({
               logo: t.logo,
-              name: `${t.teamName} (${t.firstName} ${t.lastName})`,
+              name: `${t.teamName} (${t.firstName})`,
               total: t.weeklyResults.reduce(
                 (total: number, wr: WeeklyResult) =>
                   getStartingLineupTotal(wr) + total,
@@ -89,6 +92,15 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
                   text={teamStanding.total.toFixed(2)}
                   springConfig={presets.wobbly}
                 />
+              </TableCell>
+              <TableCell>
+                {index === 0
+                  ? '$500'
+                  : index === 1
+                  ? '$200'
+                  : index === 2
+                  ? '$100'
+                  : ''}
               </TableCell>
             </TableRow>
           ))}

@@ -28,7 +28,7 @@ export interface PlayerResult {
   position: Position;
 }
 
-interface IScheduleItem {
+export interface IScheduleItem {
   weekId: number;
   start: Dayjs;
   stop: Dayjs;

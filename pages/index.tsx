@@ -16,6 +16,13 @@ const Standings = dynamic(() => import('../components/Standings/Standings'), {
   ssr: false,
 });
 
+const HighScores = dynamic(
+  () => import('../components/HighScores/HighScores'),
+  {
+    ssr: false,
+  }
+);
+
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 const GlobalStyles: FC = () => (
@@ -131,9 +138,10 @@ const Home: FC = () => {
           margin='small'
           gap='large'
         >
-          <div style={{ width: '50%', height: 500 }}>
+          <div style={{ minWidth: 400, height: 500 }}>
             <LineChart teams={result.teams} />
           </div>
+          <HighScores teams={result.teams} />
         </Box>
       </Box>
     </Grommet>
