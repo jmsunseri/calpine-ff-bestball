@@ -138,7 +138,9 @@ const Home: FC = () => {
           margin='small'
           gap='large'
         >
-          <div style={{ minWidth: 400, height: 500 }}>
+          <div
+            style={{ maxWidth: 730, minWidth: 400, height: 500, width: '100%' }}
+          >
             <LineChart teams={result.teams} />
           </div>
           <HighScores teams={result.teams} />
