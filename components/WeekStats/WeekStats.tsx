@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { WeeklyResult, PlayerResult } from '../../pages/api/stats';
+import TextTransition, { presets } from 'react-text-transition';
 import { Position } from '../../pages/api/stats';
 import {
   Heading,
@@ -63,58 +64,149 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell scope='row'>{result?.qb.name}</TableCell>
-          <TableCell>QB</TableCell>
-          <TableCell>{result?.qb.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.rb1.name}</TableCell>
-          <TableCell>RB</TableCell>
-          <TableCell>{result?.rb1.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.rb2.name}</TableCell>
-          <TableCell>RB</TableCell>
-          <TableCell>{result?.rb2.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.wr1.name}</TableCell>
-          <TableCell>WR</TableCell>
-          <TableCell>{result?.wr1.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.wr2.name}</TableCell>
-          <TableCell>WR</TableCell>
-          <TableCell>{result?.wr2.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.wr3.name}</TableCell>
-          <TableCell>WR</TableCell>
-          <TableCell>{result?.wr3.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.te.name}</TableCell>
-          <TableCell>TE</TableCell>
-          <TableCell>{result?.te.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row'>{result?.flex.name}</TableCell>
-          <TableCell>Flex</TableCell>
-          <TableCell>{result?.flex.total.toFixed(2)}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell scope='row' border='bottom'>
-            {result?.superFlex.name}
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.qb.name}
+              springConfig={presets.wobbly}
+            />
           </TableCell>
-          <TableCell border='bottom'>Super Flex</TableCell>
-          <TableCell border='bottom'>
-            {result?.superFlex.total.toFixed(2)}
+          <TableCell>QB</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.qb.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.rb1.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>RB</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.rb1.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.rb2.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>RB</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.rb2.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.wr1.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>WR</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.wr1.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.wr2.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>WR</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.wr2.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.wr3.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>WR</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.wr3.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.te.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>TE</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.te.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.flex.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>Flex</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.flex.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell scope='row'>
+            <TextTransition
+              text={result?.superFlex.name}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
+          <TableCell>Super Flex</TableCell>
+          <TableCell>
+            <TextTransition
+              text={result?.superFlex.total.toFixed(2)}
+              springConfig={presets.wobbly}
+            />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>Total</TableCell>
           <TableCell></TableCell>
-          <TableCell>{getStartingLineupTotal(result).toFixed(2)}</TableCell>
+          <TableCell>
+            <TextTransition
+              text={getStartingLineupTotal(result).toFixed(2)}
+              springConfig={presets.wobbly}
+            />
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -136,9 +228,24 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
       <TableBody>
         {result?.bench.map((benchPlayer: PlayerResult, index: number) => (
           <TableRow key={benchPlayer.name}>
-            <TableCell scope='row'>{benchPlayer.name}</TableCell>
-            <TableCell>{getPostion(benchPlayer.position)}</TableCell>
-            <TableCell>{benchPlayer.total.toFixed(2)}</TableCell>
+            <TableCell scope='row'>
+              <TextTransition
+                text={benchPlayer.name}
+                springConfig={presets.wobbly}
+              />
+            </TableCell>
+            <TableCell>
+              <TextTransition
+                text={getPostion(benchPlayer.position)}
+                springConfig={presets.wobbly}
+              />
+            </TableCell>
+            <TableCell>
+              <TextTransition
+                text={benchPlayer.total.toFixed(2)}
+                springConfig={presets.wobbly}
+              />
+            </TableCell>
           </TableRow>
         ))}
         <TableRow>
@@ -147,13 +254,16 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell border='top'></TableCell>
           <TableCell border='top'>
-            {result?.bench
-              .reduce(
-                (total: number, benchPlayer: PlayerResult) =>
-                  total + benchPlayer.total,
-                0
-              )
-              .toFixed(2)}
+            <TextTransition
+              text={result?.bench
+                .reduce(
+                  (total: number, benchPlayer: PlayerResult) =>
+                    total + benchPlayer.total,
+                  0
+                )
+                .toFixed(2)}
+              springConfig={presets.wobbly}
+            />
           </TableCell>
         </TableRow>
       </TableBody>

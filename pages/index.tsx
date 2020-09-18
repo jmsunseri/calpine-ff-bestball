@@ -1,11 +1,18 @@
 import React, { FC, useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Box, Heading, Grommet, Select, Text } from 'grommet';
 import AppBar from '../components/AppBar/AppBar';
 import theme from '../theme';
 import { Team } from './api/stats';
-import Standings from '../components/Standings/Standings';
-import WeekStats from '../components/WeekStats/WeekStats';
 import useEspn from '../hooks/useEspn';
+
+const WeekStats = dynamic(() => import('../components/WeekStats/WeekStats'), {
+  ssr: false,
+});
+
+const Standings = dynamic(() => import('../components/Standings/Standings'), {
+  ssr: false,
+});
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 

@@ -10,6 +10,7 @@ import {
   Avatar,
   Table,
 } from 'grommet';
+import TextTransition, { presets } from 'react-text-transition';
 
 interface IStandingsProps {
   teams: Team[];
@@ -77,8 +78,18 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
               <TableCell>
                 <Avatar src={teamStanding.logo} />
               </TableCell>
-              <TableCell>{teamStanding.name}</TableCell>
-              <TableCell>{teamStanding.total.toFixed(2)}</TableCell>
+              <TableCell>
+                <TextTransition
+                  text={teamStanding.name}
+                  springConfig={presets.wobbly}
+                />
+              </TableCell>
+              <TableCell>
+                <TextTransition
+                  text={teamStanding.total.toFixed(2)}
+                  springConfig={presets.wobbly}
+                />
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>
