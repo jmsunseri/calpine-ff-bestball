@@ -78,7 +78,9 @@ const Home: FC = () => {
             Calpine IT Fantasy Football Best Ball Calculator
           </Heading>
 
-          <Text>Last Updated: {result?.updatedDate?.format('h:mm:ss A')}</Text>
+          <Text size='xsmall'>
+            Updated: {result?.updatedDate?.format('h:mm:ss A')}
+          </Text>
         </AppBar>
         <Box
           direction='row-responsive'
@@ -114,6 +116,7 @@ const Home: FC = () => {
                 options={weekOptions.map((x) => `${x}`)}
                 onChange={onWeekOptionSelected}
                 placeholder='Select Week'
+                labelKey={(x) => `Week ${x}`}
               />
             </Box>
             <WeekStats result={selectedResult} />
