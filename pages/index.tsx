@@ -5,6 +5,7 @@ import AppBar from '../components/AppBar/AppBar';
 import theme from '../theme';
 import { Team } from './api/stats';
 import useEspn from '../hooks/useEspn';
+import BuyMeCoffee from '../components/BuyMeCoffee/BuyMeCoffee';
 
 const WeekStats = dynamic(() => import('../components/WeekStats/WeekStats'), {
   ssr: false,
@@ -66,11 +67,13 @@ const Home: FC = () => {
           box-sizing: border-box;
         }
       `}</style>
+
       <Box fill>
         <AppBar>
           <Heading level='3' margin='none'>
             Calpine IT Fantasy Football Best Ball Calculator
           </Heading>
+
           <Text>Last Updated: {result?.updatedDate?.format('h:mm:ss A')}</Text>
         </AppBar>
         <Box
@@ -81,7 +84,18 @@ const Home: FC = () => {
           gap='large'
         >
           <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
-            <Heading level={3}>Team Results</Heading>
+            <Box direction='row' justify='between' align='center'>
+              <Heading level={3}>Team Results</Heading>
+              <Box
+                elevation='medium'
+                height={{ min: '40px', max: '40px' }}
+                align='end'
+                round='medium'
+              >
+                <BuyMeCoffee />
+              </Box>
+            </Box>
+
             <Box direction='row' pad='xxsmall' gap='small'>
               <Select
                 options={result.teams}
