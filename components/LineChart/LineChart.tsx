@@ -78,7 +78,7 @@ const LineChart: FC<{ teams: Team[] }> = ({ teams }) => (
         legendOffset: -40,
         legendPosition: 'middle',
       }}
-      colors={{ scheme: 'nivo' }}
+      colors={{ scheme: 'paired' }}
       pointSize={10}
       pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
