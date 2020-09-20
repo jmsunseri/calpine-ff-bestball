@@ -1,8 +1,8 @@
-import { ResponsiveLine } from '@nivo/line';
+import { DatumValue, ResponsiveLine } from '@nivo/line';
 import { Team, WeeklyResult } from '../../pages/api/stats';
 import { schedule } from '../../pages/api/stats';
 import { FC } from 'react';
-import { Heading, Box } from 'grommet';
+import { Heading, Box, Card, Avatar } from 'grommet';
 
 const getStartingLineupTotal = (result?: WeeklyResult): number => {
   if (result) {
@@ -79,13 +79,28 @@ const LineChart: FC<{ teams: Team[] }> = ({ teams }) => (
         legendPosition: 'middle',
       }}
       colors={{ scheme: 'paired' }}
-      pointSize={10}
+      pointSize={7}
       pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
       pointBorderColor={{ from: 'serieColor' }}
-      pointLabel={(x) => x.yFormatted.toString()}
-      pointLabelYOffset={-12}
       useMesh={true}
+      tooltip={(x) => (
+        <Box
+          elevation='small'
+          background={{ color: { light: 'white' } }}
+          pad='xsmall'
+          round='xsmall'
+          direction='row'
+          gap='xsmall'
+          align='center'
+        >
+          <Avatar
+            size='small'
+            src={teams.find((y) => y.firstName === x.point.serieId).logo}
+          ></Avatar>
+          {`${x.point.serieId} ${(+x.point.data.y).toFixed(0)}`}
+        </Box>
+      )}
       legends={[
         {
           anchor: 'bottom-right',
