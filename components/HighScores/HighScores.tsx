@@ -7,10 +7,14 @@ import {
   TableHeader,
   TableRow,
   TableCell,
-  Avatar,
   Table,
 } from 'grommet';
-import TextTransition, { presets } from 'react-text-transition';
+import dynamic from 'next/dynamic';
+
+const FancyText = dynamic(() => import('@components/FancyText/FancyText'), {
+  ssr: false,
+  loading: () => <>...</>,
+});
 
 interface IHighScoresProps {
   teams: Team[];
@@ -82,9 +86,8 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
                   {highTeam?.total ? highTeam?.team.teamName : ''}
                 </TableCell>
                 <TableCell>
-                  <TextTransition
+                  <FancyText
                     text={highTeam?.total ? highTeam.total.toFixed(2) : ''}
-                    springConfig={presets.wobbly}
                   />
                 </TableCell>
                 <TableCell>{!!highTeam?.total ? '$20' : ''}</TableCell>
@@ -96,16 +99,10 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
               Season
             </TableCell>
             <TableCell border='top'>
-              <TextTransition
-                text={seasonHighScore?.team.teamName}
-                springConfig={presets.wobbly}
-              />
+              <FancyText text={seasonHighScore?.team.teamName} />
             </TableCell>
             <TableCell border='top'>
-              <TextTransition
-                text={seasonHighScore?.total.toFixed(2)}
-                springConfig={presets.wobbly}
-              />
+              <FancyText text={seasonHighScore?.total.toFixed(2)} />
             </TableCell>
             <TableCell border='top'>{!!seasonHighScore ? '$80' : ''}</TableCell>
           </TableRow>

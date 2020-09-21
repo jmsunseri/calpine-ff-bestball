@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
+import dynamic from 'next/dynamic';
 import { WeeklyResult, PlayerResult } from '@api/stats';
-import TextTransition, { presets } from 'react-text-transition';
 import { Position } from '@api/stats';
 import {
   Heading,
@@ -10,6 +10,11 @@ import {
   TableCell,
   Table,
 } from 'grommet';
+
+const FancyText = dynamic(() => import('@components/FancyText/FancyText'), {
+  ssr: false,
+  loading: () => <>...</>,
+});
 
 interface IWeekStatsProps {
   result: WeeklyResult;
@@ -52,147 +57,90 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
       <TableBody>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.qb.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.qb.name} />
           </TableCell>
           <TableCell>QB</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.qb.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.qb.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.rb1.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.rb1.name} />
           </TableCell>
           <TableCell>RB</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.rb1.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.rb1.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.rb2.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.rb2.name} />
           </TableCell>
           <TableCell>RB</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.rb2.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.rb2.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.wr1.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr1.name} />
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.wr1.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr1.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.wr2.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr2.name} />
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.wr2.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr2.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.wr3.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr3.name} />
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.wr3.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.wr3.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.te.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.te.name} />
           </TableCell>
           <TableCell>TE</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.te.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.te.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.flex.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.flex.name} />
           </TableCell>
           <TableCell>Flex</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.flex.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.flex.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
-            <TextTransition
-              text={result?.superFlex.name}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.superFlex.name} />
           </TableCell>
           <TableCell>Super Flex</TableCell>
           <TableCell>
-            <TextTransition
-              text={result?.superFlex.total.toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={result?.superFlex.total.toFixed(2)} />
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>Total</TableCell>
           <TableCell></TableCell>
           <TableCell>
-            <TextTransition
-              text={getStartingLineupTotal(result).toFixed(2)}
-              springConfig={presets.wobbly}
-            />
+            <FancyText text={getStartingLineupTotal(result).toFixed(2)} />
           </TableCell>
         </TableRow>
       </TableBody>
@@ -216,22 +164,13 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
         {result?.bench.map((benchPlayer: PlayerResult, index: number) => (
           <TableRow key={benchPlayer.name}>
             <TableCell scope='row'>
-              <TextTransition
-                text={benchPlayer.name}
-                springConfig={presets.wobbly}
-              />
+              <FancyText text={benchPlayer.name} />
             </TableCell>
             <TableCell>
-              <TextTransition
-                text={Position[benchPlayer.position].toString()}
-                springConfig={presets.wobbly}
-              />
+              <FancyText text={Position[benchPlayer.position].toString()} />
             </TableCell>
             <TableCell>
-              <TextTransition
-                text={benchPlayer.total.toFixed(2)}
-                springConfig={presets.wobbly}
-              />
+              <FancyText text={benchPlayer.total.toFixed(2)} />
             </TableCell>
           </TableRow>
         ))}
@@ -241,7 +180,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell border='top'></TableCell>
           <TableCell border='top'>
-            <TextTransition
+            <FancyText
               text={result?.bench
                 .reduce(
                   (total: number, benchPlayer: PlayerResult) =>
@@ -249,7 +188,6 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
                   0
                 )
                 .toFixed(2)}
-              springConfig={presets.wobbly}
             />
           </TableCell>
         </TableRow>

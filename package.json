@@ -17,7 +17,8 @@
     "dayjs": "^1.8.35",
     "lru-cache": "^6.0.0",
     "react-text-transition": "^1.1.2",
-    "@nivo/line": "^0.62.0"
+    "@nivo/line": "^0.62.0",
+    "swr": "^0.3.3"
   },
   "devDependencies": {
     "@types/node": "^14.10.1",

@@ -10,7 +10,12 @@ import {
   Avatar,
   Table,
 } from 'grommet';
-import TextTransition, { presets } from 'react-text-transition';
+import dynamic from 'next/dynamic';
+
+const FancyText = dynamic(() => import('@components/FancyText/FancyText'), {
+  ssr: false,
+  loading: () => <>...</>,
+});
 
 interface IStandingsProps {
   teams: Team[];
@@ -82,16 +87,10 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
                 <Avatar src={teamStanding.logo} />
               </TableCell>
               <TableCell>
-                <TextTransition
-                  text={teamStanding.name}
-                  springConfig={presets.wobbly}
-                />
+                <FancyText text={teamStanding.name} />
               </TableCell>
               <TableCell>
-                <TextTransition
-                  text={teamStanding.total.toFixed(2)}
-                  springConfig={presets.wobbly}
-                />
+                <FancyText text={teamStanding.total.toFixed(2)} />
               </TableCell>
               <TableCell>
                 {index === 0

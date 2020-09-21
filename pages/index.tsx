@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { Box, Heading, Grommet, Select, Text, Image } from 'grommet';
 import AppBar from '@components/AppBar/AppBar';
@@ -8,30 +7,18 @@ import { Team } from '@api/stats';
 import useEspn from '@hooks/useEspn';
 import BuyMeCoffee from '@components/BuyMeCoffee/BuyMeCoffee';
 import LineChart from '@components/LineChart/LineChart';
+import WeekStats from '@components/WeekStats/WeekStats';
+import Standings from '@components/Standings/Standings';
+import HighScores from '@components/HighScores/HighScores';
 
 import styles from './index.module.scss';
-
-const WeekStats = dynamic(() => import('../components/WeekStats/WeekStats'), {
-  ssr: false,
-});
-
-const Standings = dynamic(() => import('../components/Standings/Standings'), {
-  ssr: false,
-});
-
-const HighScores = dynamic(
-  () => import('../components/HighScores/HighScores'),
-  {
-    ssr: false,
-  }
-);
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 const Home: FC = () => {
   const [teamGuid, setTeamGuid] = useState<string>();
   const [selectedWeek, setSelectedWeek] = useState<number>();
-  const { result, refresh } = useEspn();
+  const { result } = useEspn();
 
   const selectedResult = result.teams
     .find((x) => x.guid === teamGuid)
@@ -49,10 +36,6 @@ const Home: FC = () => {
     if (t) {
       setTeamGuid(t);
     }
-
-    setInterval(() => {
-      refresh();
-    }, 15000);
   }, []);
 
   const onTeamSelect = (value: { option: Team }) => {
@@ -72,8 +55,6 @@ const Home: FC = () => {
         <link rel='icon' href='/favicon.ico'></link>
       </Head>
       <Grommet theme={theme}>
-        {/* <GlobalStyles /> */}
-
         <Box fill>
           <AppBar>
             <Box direction='row' justify='start' align='center' gap='xxsmall'>

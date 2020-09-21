@@ -1,45 +1,30 @@
 import { IResult } from '../pages/api/stats';
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import useSWR from 'swr';
 
-interface IUseEspnResult {
+export interface IUseEspnResult {
   result: IResult;
-  refresh: () => void;
 }
 
 type UseEspnHook = () => IUseEspnResult;
 
-const fetchStats = (): Promise<IResult> =>
-  new Promise<IResult>((resolve, reject) => {
-    fetch('/api/stats')
-      .then((response: Response) => {
-        response
-          .json()
-          .then((values: IResult) => {
-            resolve(values);
-          })
-          .catch((reason: any) => reject(reason));
-      })
-      .catch((reason: any) => reject(reason));
-  });
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 const useEspn: UseEspnHook = () => {
   const [result, setResult] = useState<IResult>({ teams: [] });
 
-  const refresh = () => {
-    fetchStats().then((r: IResult) => {
-      setResult({
-        ...r,
-        updatedDate: dayjs(r.updatedDate),
-      });
-    });
-  };
+  const { data, error } = useSWR<IResult>('/api/stats', fetcher, {
+    refreshInterval: 15000,
+  });
 
   useEffect(() => {
-    refresh();
-  }, []);
+    if (data) {
+      setResult({ ...data, updatedDate: dayjs(data.updatedDate) });
+    }
+  }, [data]);
 
-  return { result, refresh };
+  return { result };
 };
 
 export default useEspn;
