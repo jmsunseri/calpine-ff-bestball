@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Team, WeeklyResult, schedule, IScheduleItem } from '@api/stats';
+import { Team, schedule, IScheduleItem, WeeklyResult } from '@api/stats';
 import {
   Box,
   Heading,
@@ -20,39 +20,20 @@ interface IHighScoresProps {
   teams: Team[];
 }
 
-interface ITeamStanding {
-  name: string;
-  total: number;
-  logo?: string;
-}
-
-const getStartingLineupTotal = (result?: WeeklyResult): number => {
-  if (result) {
-    return (
-      result.qb.total +
-      result.rb1.total +
-      result.rb2.total +
-      result.wr1.total +
-      result.wr2.total +
-      result.wr3.total +
-      result.te.total +
-      result.flex.total +
-      result.superFlex.total
-    );
-  }
-  return 0;
-};
-
 const HighScores: FC<IHighScoresProps> = ({ teams }) => {
-  const calcdTeams = teams.flatMap((t) =>
-    t.weeklyResults.map((wr) => ({
-      team: t,
-      result: wr,
-      total: getStartingLineupTotal(wr),
-    }))
-  );
+  const flatWeeklyResults =
+    teams?.length &&
+    teams.flatMap((t) =>
+      t.weeklyResults.map((wr: WeeklyResult) => ({
+        team: t,
+        result: wr,
+        total: wr.startingTotal || 0,
+      }))
+    );
 
-  const seasonHighScore = calcdTeams.sort((a, b) => b.total - a.total)[0];
+  const seasonHighScore =
+    flatWeeklyResults?.length &&
+    flatWeeklyResults?.sort((a, b) => b.total - a.total)[0];
 
   return (
     <Box direction='column'>
@@ -76,9 +57,11 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
         </TableHeader>
         <TableBody>
           {schedule.map((s: IScheduleItem) => {
-            const highTeam = calcdTeams
-              .filter((t) => t.result.weekId === s.weekId)
-              .sort((a, b) => b.total - a.total)[0];
+            const highTeam =
+              flatWeeklyResults?.length &&
+              flatWeeklyResults
+                ?.filter((t) => t.result.weekId === s.weekId)
+                .sort((a, b) => b.total - a.total)[0];
             return (
               <TableRow key={s.weekId}>
                 <TableCell scope='row'>{s.weekId}</TableCell>

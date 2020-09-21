@@ -20,23 +20,6 @@ interface IWeekStatsProps {
   result: WeeklyResult;
 }
 
-const getStartingLineupTotal = (result?: WeeklyResult): number => {
-  if (result) {
-    return (
-      result.qb.total +
-      result.rb1.total +
-      result.rb2.total +
-      result.wr1.total +
-      result.wr2.total +
-      result.wr3.total +
-      result.te.total +
-      result.flex.total +
-      result.superFlex.total
-    );
-  }
-  return 0;
-};
-
 const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
   <>
     <Heading level={3}>Starting Lineup</Heading>
@@ -140,7 +123,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell scope='row'>Total</TableCell>
           <TableCell></TableCell>
           <TableCell>
-            <FancyText text={getStartingLineupTotal(result).toFixed(2)} />
+            <FancyText text={result?.startingTotal?.toFixed(2)} />
           </TableCell>
         </TableRow>
       </TableBody>
@@ -180,15 +163,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell border='top'></TableCell>
           <TableCell border='top'>
-            <FancyText
-              text={result?.bench
-                .reduce(
-                  (total: number, benchPlayer: PlayerResult) =>
-                    total + benchPlayer.total,
-                  0
-                )
-                .toFixed(2)}
-            />
+            <FancyText text={result?.benchTotal?.toFixed(2)} />
           </TableCell>
         </TableRow>
       </TableBody>

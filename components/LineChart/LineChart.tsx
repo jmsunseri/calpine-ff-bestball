@@ -3,23 +3,6 @@ import { Team, WeeklyResult, schedule } from '@api/stats';
 import { FC } from 'react';
 import { Heading, Box, Avatar } from 'grommet';
 
-const getStartingLineupTotal = (result?: WeeklyResult): number => {
-  if (result) {
-    return (
-      result.qb.total +
-      result.rb1.total +
-      result.rb2.total +
-      result.wr1.total +
-      result.wr2.total +
-      result.wr3.total +
-      result.te.total +
-      result.flex.total +
-      result.superFlex.total
-    );
-  }
-  return 0;
-};
-
 const teamsToLineChartData = (teams: Team[]) => {
   return teams.map((t) => ({
     id: t.firstName,
@@ -33,9 +16,7 @@ const teamsToLineChartData = (teams: Team[]) => {
               x: s.start.format('YYYY-MM-DD'),
               y: t.weeklyResults.reduce(
                 (total: number, wr: WeeklyResult) =>
-                  wr.weekId <= s.weekId
-                    ? total + getStartingLineupTotal(wr)
-                    : total,
+                  wr.weekId <= s.weekId ? total + wr.startingTotal : total,
                 0
               ),
             },

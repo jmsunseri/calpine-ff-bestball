@@ -67,6 +67,8 @@ export interface WeeklyResult {
   flex?: PlayerResult;
   superFlex?: PlayerResult;
   bench: PlayerResult[];
+  startingTotal: number;
+  benchTotal: number;
 }
 
 interface EspnMember {
@@ -270,6 +272,47 @@ const mapToWeeklyResult = (
   };
 };
 
+const getStartingLineupTotal = (result?: WeeklyResult): number => {
+  if (result) {
+    return (
+      result.qb.total +
+      result.rb1.total +
+      result.rb2.total +
+      result.wr1.total +
+      result.wr2.total +
+      result.wr3.total +
+      result.te.total +
+      result.flex.total +
+      result.superFlex.total
+    );
+  }
+  return 0;
+};
+
+const entriesToWeeklyResult = (
+  entries: EspnLineupEntry[],
+  weekId: number
+): WeeklyResult => {
+  const result = entries
+    .map(mapToPlayerResult)
+    .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
+    .reduce(mapToWeeklyResult, {
+      weekId,
+      bench: [],
+      startingTotal: 0,
+      benchTotal: 0,
+    });
+
+  return {
+    ...result,
+    startingTotal: getStartingLineupTotal(result),
+    benchTotal: result.bench.reduce(
+      (total: number, benchPlayer: PlayerResult) => total + benchPlayer.total,
+      0
+    ),
+  };
+};
+
 const convertEspnResult = (espnResult: EspnResult) => {
   const result: Team[] = teams.map((t: Team) => {
     const { firstName, lastName } = espnResult.members.find(
@@ -288,21 +331,15 @@ const convertEspnResult = (espnResult: EspnResult) => {
       .map(
         (em: EspnMatchup): WeeklyResult => {
           if (em.away.teamId === t.id) {
-            return em.away.rosterForCurrentScoringPeriod.entries
-              .map(mapToPlayerResult)
-              .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
-              .reduce(mapToWeeklyResult, {
-                weekId: em.matchupPeriodId,
-                bench: [],
-              });
+            return entriesToWeeklyResult(
+              em.away.rosterForCurrentScoringPeriod.entries,
+              em.matchupPeriodId
+            );
           }
-          return em.home.rosterForCurrentScoringPeriod.entries
-            .map(mapToPlayerResult)
-            .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
-            .reduce(mapToWeeklyResult, {
-              weekId: em.matchupPeriodId,
-              bench: [],
-            });
+          return entriesToWeeklyResult(
+            em.home.rosterForCurrentScoringPeriod.entries,
+            em.matchupPeriodId
+          );
         }
       );
 

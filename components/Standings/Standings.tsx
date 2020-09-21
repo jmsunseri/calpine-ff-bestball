@@ -27,23 +27,6 @@ interface ITeamStanding {
   logo?: string;
 }
 
-const getStartingLineupTotal = (result?: WeeklyResult): number => {
-  if (result) {
-    return (
-      result.qb.total +
-      result.rb1.total +
-      result.rb2.total +
-      result.wr1.total +
-      result.wr2.total +
-      result.wr3.total +
-      result.te.total +
-      result.flex.total +
-      result.superFlex.total
-    );
-  }
-  return 0;
-};
-
 const Standings: FC<IStandingsProps> = ({ teams }) => (
   <Box direction='column'>
     <Heading level={3}>Standings</Heading>
@@ -71,8 +54,7 @@ const Standings: FC<IStandingsProps> = ({ teams }) => (
               logo: t.logo,
               name: `${t.teamName} (${t.firstName})`,
               total: t.weeklyResults.reduce(
-                (total: number, wr: WeeklyResult) =>
-                  getStartingLineupTotal(wr) + total,
+                (total: number, wr: WeeklyResult) => wr.startingTotal + total,
                 0
               ),
             })
