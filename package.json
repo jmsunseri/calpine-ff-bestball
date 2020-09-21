@@ -23,6 +23,7 @@
     "@types/node": "^14.10.1",
     "@types/react": "^16.9.49",
     "@types/lru-cache": "^5.1.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "sass": "^1.26.11"
   }
 }

@@ -1,8 +1,7 @@
-import { DatumValue, ResponsiveLine } from '@nivo/line';
-import { Team, WeeklyResult } from '../../pages/api/stats';
-import { schedule } from '../../pages/api/stats';
+import { ResponsiveLine } from '@nivo/line';
+import { Team, WeeklyResult, schedule } from '@api/stats';
 import { FC } from 'react';
-import { Heading, Box, Card, Avatar } from 'grommet';
+import { Heading, Box, Avatar } from 'grommet';
 
 const getStartingLineupTotal = (result?: WeeklyResult): number => {
   if (result) {

@@ -1,10 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Team,
-  WeeklyResult,
-  schedule,
-  IScheduleItem,
-} from '../../pages/api/stats';
+import { Team, WeeklyResult, schedule, IScheduleItem } from '@api/stats';
 import {
   Box,
   Heading,

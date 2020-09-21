@@ -1,12 +1,15 @@
 import React, { FC, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Box, Heading, Grommet, Select, Text } from 'grommet';
-import AppBar from '../components/AppBar/AppBar';
-import theme from '../theme';
-import { Team } from './api/stats';
-import useEspn from '../hooks/useEspn';
-import BuyMeCoffee from '../components/BuyMeCoffee/BuyMeCoffee';
-import LineChart from '../components/LineChart/LineChart';
+import Head from 'next/head';
+import { Box, Heading, Grommet, Select, Text, Image } from 'grommet';
+import AppBar from '@components/AppBar/AppBar';
+import theme from 'theme';
+import { Team } from '@api/stats';
+import useEspn from '@hooks/useEspn';
+import BuyMeCoffee from '@components/BuyMeCoffee/BuyMeCoffee';
+import LineChart from '@components/LineChart/LineChart';
+
+import styles from './index.module.scss';
 
 const WeekStats = dynamic(() => import('../components/WeekStats/WeekStats'), {
   ssr: false,
@@ -24,20 +27,6 @@ const HighScores = dynamic(
 );
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-
-const GlobalStyles: FC = () => (
-  <style jsx global>{`
-    html,
-    body {
-      padding: 0;
-      margin: 0;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-  `}</style>
-);
 
 const Home: FC = () => {
   const [teamGuid, setTeamGuid] = useState<string>();
@@ -77,76 +66,84 @@ const Home: FC = () => {
   };
 
   return (
-    <Grommet theme={theme}>
-      <GlobalStyles />
+    <>
+      <Head>
+        <title>Calpine IT Fantasy Football Best Ball Calculator</title>
+        <link rel='icon' href='/favicon.ico'></link>
+      </Head>
+      <Grommet theme={theme}>
+        {/* <GlobalStyles /> */}
 
-      <Box fill>
-        <AppBar>
-          <Heading level='3' margin='none'>
-            Calpine IT Fantasy Football Best Ball Calculator
-          </Heading>
+        <Box fill>
+          <AppBar>
+            <Box direction='row' justify='start' align='center' gap='xxsmall'>
+              <Image src='calculator.svg' height={36} />
 
-          <Text size='xsmall'>
-            Updated: {result?.updatedDate?.format('h:mm:ss A')}
-          </Text>
-        </AppBar>
-        <Box
-          direction='row-responsive'
-          justify='center'
-          flex
-          margin='small'
-          gap='large'
-        >
-          <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
-            <Box direction='row' justify='between' align='center'>
-              <Heading level={3}>Team Results</Heading>
-              <Box
-                elevation='medium'
-                height={{ min: '40px', max: '40px' }}
-                align='end'
-                round='medium'
-              >
-                <BuyMeCoffee />
-              </Box>
+              <Heading level='3' margin='none'>
+                Calpine IT Fantasy Football Best Ball Calculator
+              </Heading>
             </Box>
 
-            <Box direction='row' pad='xxsmall' gap='small'>
-              <Select
-                options={result.teams}
-                labelKey='teamName'
-                onChange={onTeamSelect}
-                placeholder='Select User'
-                value={result.teams.find((x) => x.guid === teamGuid)}
-                valueKey='guid'
-              />
-              <Select
-                value={`${selectedWeek}`}
-                options={weekOptions.map((x) => `${x}`)}
-                onChange={onWeekOptionSelected}
-                placeholder='Select Week'
-                labelKey={(x) => `Week ${x}`}
-              />
-            </Box>
-            <WeekStats result={selectedResult} />
-          </Box>
-          <Standings teams={result.teams} />
-        </Box>
-        <Box
-          direction='row-responsive'
-          justify='center'
-          flex
-          margin='small'
-          gap='large'
-        >
-          <div
-            style={{ maxWidth: 730, minWidth: 400, height: 500, width: '100%' }}
+            <Text size='xsmall'>
+              Updated: {result?.updatedDate?.format('h:mm:ss A')}
+            </Text>
+          </AppBar>
+          <Box
+            direction='row-responsive'
+            justify='center'
+            flex
+            margin='small'
+            gap='large'
           >
-            <LineChart teams={result.teams} />
-          </div>
-          <HighScores teams={result.teams} />
+            <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
+              <Box direction='row' justify='between' align='center'>
+                <Heading level={3}>Team Results</Heading>
+                <Box
+                  elevation='medium'
+                  height={{ min: '40px', max: '40px' }}
+                  align='end'
+                  round='medium'
+                >
+                  <BuyMeCoffee />
+                </Box>
+              </Box>
+
+              <Box direction='row' pad='xxsmall' gap='small'>
+                <Select
+                  options={result.teams}
+                  labelKey='teamName'
+                  onChange={onTeamSelect}
+                  placeholder='Select User'
+                  value={result.teams.find((x) => x.guid === teamGuid)}
+                  valueKey='guid'
+                />
+                <Select
+                  value={`${selectedWeek}`}
+                  options={weekOptions.map((x) => `${x}`)}
+                  onChange={onWeekOptionSelected}
+                  placeholder='Select Week'
+                  labelKey={(x) => `Week ${x}`}
+                />
+              </Box>
+              <WeekStats result={selectedResult} />
+            </Box>
+            <Standings teams={result.teams} />
+          </Box>
+          <Box
+            direction='row-responsive'
+            justify='center'
+            flex
+            margin='small'
+            gap='large'
+          >
+            <div className={styles.lineChartContainer}>
+              <LineChart teams={result.teams} />
+            </div>
+            <HighScores teams={result.teams} />
+          </Box>
         </Box>
-      </Box>
-    </Grommet>
+      </Grommet>
+    </>
   );
 };
 

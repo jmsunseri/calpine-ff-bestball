@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { WeeklyResult, PlayerResult } from '../../pages/api/stats';
+import { WeeklyResult, PlayerResult } from '@api/stats';
 import TextTransition, { presets } from 'react-text-transition';
-import { Position } from '../../pages/api/stats';
+import { Position } from '@api/stats';
 import {
   Heading,
   TableBody,
@@ -30,19 +30,6 @@ const getStartingLineupTotal = (result?: WeeklyResult): number => {
     );
   }
   return 0;
-};
-
-const getPostion = (pos: Position): string => {
-  switch (pos) {
-    case Position.QB:
-      return 'QB';
-    case Position.RB:
-      return 'RB';
-    case Position.WR:
-      return 'WR';
-    default:
-      return 'TE';
-  }
 };
 
 const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
@@ -236,7 +223,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
             </TableCell>
             <TableCell>
               <TextTransition
-                text={getPostion(benchPlayer.position)}
+                text={Position[benchPlayer.position].toString()}
                 springConfig={presets.wobbly}
               />
             </TableCell>
