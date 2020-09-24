@@ -8,6 +8,7 @@ import {
   TableRow,
   TableCell,
   Table,
+  Avatar,
 } from 'grommet';
 import dynamic from 'next/dynamic';
 
@@ -51,7 +52,7 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
             <TableCell scope='col' border='bottom'>
               Week
             </TableCell>
-            <TableCell scope='col' border='bottom'>
+            <TableCell scope='col' border='bottom' colSpan={2}>
               Team
             </TableCell>
             <TableCell scope='col' border='bottom'>
@@ -73,6 +74,11 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
               <TableRow key={s.weekId}>
                 <TableCell scope='row'>{s.weekId}</TableCell>
                 <TableCell>
+                  {!!highTeam?.total && (
+                    <Avatar src={highTeam?.team.logo} size='medium' />
+                  )}
+                </TableCell>
+                <TableCell>
                   {highTeam?.total ? highTeam?.team.teamName : ''}
                 </TableCell>
                 <TableCell>
@@ -87,6 +93,9 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
           <TableRow>
             <TableCell border='top' scope='row'>
               Season
+            </TableCell>
+            <TableCell border='top'>
+              <Avatar src={seasonHighScore?.team.logo} />
             </TableCell>
             <TableCell border='top'>
               <FancyText text={seasonHighScore?.team.teamName} />
