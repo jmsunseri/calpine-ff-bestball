@@ -35,6 +35,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell scope='col' border='bottom'>
             Score
           </TableCell>
+          <TableCell scope='col' border='bottom'>
+            Min
+          </TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -46,6 +49,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>
             <FancyText text={result?.qb.total.toFixed(2)} />
           </TableCell>
+          <TableCell>
+            <FancyText text={result?.qb.minutes.toFixed(0)} />
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
@@ -54,6 +60,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>RB</TableCell>
           <TableCell>
             <FancyText text={result?.rb1.total.toFixed(2)} />
+          </TableCell>
+          <TableCell>
+            <FancyText text={result?.rb1.minutes.toFixed(0)} />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -64,6 +73,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>
             <FancyText text={result?.rb2.total.toFixed(2)} />
           </TableCell>
+          <TableCell>
+            <FancyText text={result?.rb2.minutes.toFixed(0)} />
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
@@ -72,6 +84,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>WR</TableCell>
           <TableCell>
             <FancyText text={result?.wr1.total.toFixed(2)} />
+          </TableCell>
+          <TableCell>
+            <FancyText text={result?.wr1.minutes.toFixed(0)} />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -82,6 +97,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>
             <FancyText text={result?.wr2.total.toFixed(2)} />
           </TableCell>
+          <TableCell>
+            <FancyText text={result?.wr2.minutes.toFixed(0)} />
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
@@ -90,6 +108,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>WR</TableCell>
           <TableCell>
             <FancyText text={result?.wr3.total.toFixed(2)} />
+          </TableCell>
+          <TableCell>
+            <FancyText text={result?.wr3.minutes.toFixed(0)} />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -100,6 +121,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>
             <FancyText text={result?.te.total.toFixed(2)} />
           </TableCell>
+          <TableCell>
+            <FancyText text={result?.te.minutes.toFixed(0)} />
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell scope='row'>
@@ -109,14 +133,20 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell>
             <FancyText text={result?.flex.total.toFixed(2)} />
           </TableCell>
+          <TableCell>
+            <FancyText text={result?.flex.minutes.toFixed(0)} />
+          </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell scope='row'>
+          <TableCell scope='row' border='bottom'>
             <FancyText text={result?.superFlex.name} />
           </TableCell>
-          <TableCell>Super Flex</TableCell>
-          <TableCell>
+          <TableCell border='bottom'>Super Flex</TableCell>
+          <TableCell border='bottom'>
             <FancyText text={result?.superFlex.total.toFixed(2)} />
+          </TableCell>
+          <TableCell border='bottom'>
+            <FancyText text={result?.superFlex.minutes.toFixed(0)} />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -124,6 +154,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell></TableCell>
           <TableCell>
             <FancyText text={result?.startingTotal?.toFixed(2)} />
+          </TableCell>
+          <TableCell>
+            <FancyText text={result?.startingMinutes.toFixed(0)} />
           </TableCell>
         </TableRow>
       </TableBody>
@@ -141,6 +174,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell scope='col' border='bottom'>
             Score
           </TableCell>
+          <TableCell scope='col' border='bottom'>
+            Min
+          </TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -155,6 +191,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
             <TableCell>
               <FancyText text={benchPlayer.total.toFixed(2)} />
             </TableCell>
+            <TableCell>
+              <FancyText text={benchPlayer.minutes.toFixed(0)} />
+            </TableCell>
           </TableRow>
         ))}
         <TableRow>
@@ -164,6 +203,9 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           <TableCell border='top'></TableCell>
           <TableCell border='top'>
             <FancyText text={result?.benchTotal?.toFixed(2)} />
+          </TableCell>
+          <TableCell border='top'>
+            <FancyText text={result?.benchMinutes?.toFixed(0)} />
           </TableCell>
         </TableRow>
       </TableBody>

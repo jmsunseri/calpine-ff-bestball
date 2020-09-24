@@ -33,7 +33,7 @@ const LineChart: FC<{ teams: Team[] }> = ({ teams }) => (
     <Heading level={3}>Trends</Heading>
     <ResponsiveLine
       data={teamsToLineChartData(teams)}
-      margin={{ top: 10, right: 110, bottom: 70, left: 60 }}
+      margin={{ top: 10, right: 110, bottom: 120, left: 60 }}
       xScale={{ type: 'point' }}
       yScale={{
         type: 'linear',

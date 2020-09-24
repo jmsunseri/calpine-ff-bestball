@@ -36,7 +36,14 @@ const HighScores: FC<IHighScoresProps> = ({ teams }) => {
     flatWeeklyResults?.sort((a, b) => b.total - a.total)[0];
 
   return (
-    <Box direction='column'>
+    <Box
+      direction='column'
+      flex
+      elevation='small'
+      round='small'
+      pad='small'
+      width={{ min: '400px', max: '600px' }}
+    >
       <Heading level={3}>High Score Winners</Heading>
       <Table>
         <TableHeader>

@@ -12,6 +12,7 @@ import Standings from '@components/Standings/Standings';
 import HighScores from '@components/HighScores/HighScores';
 
 import styles from './index.module.scss';
+import ScoreBoard from '@components/ScoreBoard/ScoreBoard';
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
@@ -76,11 +77,19 @@ const Home: FC = () => {
             margin='small'
             gap='large'
           >
-            <Box direction='column' flex width={{ min: '400px', max: '600px' }}>
+            <ScoreBoard teams={result.teams} />
+            <Box
+              direction='column'
+              flex
+              width={{ min: '400px', max: '600px' }}
+              elevation='small'
+              round='small'
+              pad='small'
+            >
               <Box direction='row' justify='between' align='center'>
                 <Heading level={3}>Team Results</Heading>
                 <Box
-                  elevation='medium'
+                  elevation='small'
                   height={{ min: '40px', max: '40px' }}
                   align='end'
                   round='medium'
@@ -108,7 +117,20 @@ const Home: FC = () => {
               </Box>
               <WeekStats result={selectedResult} />
             </Box>
-            <Standings teams={result.teams} />
+          </Box>
+          <Box direction='row' justify='center' flex margin='small'>
+            <Box
+              elevation='small'
+              round='small'
+              pad='medium'
+              width={{ min: '400px', max: '1200px' }}
+              height='900px'
+              flex
+            >
+              {/* <div className={styles.lineChartContainer}> */}
+              <LineChart teams={result.teams} />
+              {/* </div> */}
+            </Box>
           </Box>
           <Box
             direction='row-responsive'
@@ -117,9 +139,7 @@ const Home: FC = () => {
             margin='small'
             gap='large'
           >
-            <div className={styles.lineChartContainer}>
-              <LineChart teams={result.teams} />
-            </div>
+            <Standings teams={result.teams} />
             <HighScores teams={result.teams} />
           </Box>
         </Box>

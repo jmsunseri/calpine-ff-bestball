@@ -26,6 +26,7 @@ export interface PlayerResult {
   name: string;
   total: number;
   position: Position;
+  minutes: number;
 }
 
 export interface IScheduleItem {
@@ -68,7 +69,9 @@ export interface WeeklyResult {
   superFlex?: PlayerResult;
   bench: PlayerResult[];
   startingTotal: number;
+  startingMinutes: number;
   benchTotal: number;
+  benchMinutes: number;
 }
 
 interface EspnMember {
@@ -91,6 +94,7 @@ interface EspnPlayer {
   fullName: string;
   defaultPositionId: number;
   stats: EspnStat[];
+  proTeamId: number;
 }
 
 enum EspnStatSource {
@@ -137,6 +141,22 @@ interface EspnResult {
   teams: EspnTeam[];
 }
 
+interface IEspnEventResult {
+  events: IEspnEvent[];
+}
+
+interface IEspnEvent {
+  competitionId: string;
+  percentComplete: number;
+  competitors: IEspnCompetitor[];
+}
+
+interface IEspnCompetitor {
+  id: string;
+  name: string;
+  abbreviation: string;
+}
+
 export enum Position {
   QB = 1,
   RB = 2,
@@ -163,9 +183,17 @@ export interface Stats {
   teams: Team[];
 }
 
-const mapToPlayerResult = (entry: EspnLineupEntry): PlayerResult => ({
+type MinutesMap = { [key: string]: number };
+
+const mapToPlayerResult = (
+  entry: EspnLineupEntry,
+  minutesMap?: MinutesMap
+): PlayerResult => ({
   name: entry.playerPoolEntry.player.fullName,
   position: entry?.playerPoolEntry?.player?.defaultPositionId,
+  minutes: !!minutesMap
+    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`]
+    : 0,
   total: entry?.playerPoolEntry?.player.stats?.length
     ? entry?.playerPoolEntry?.player.stats.find(
         (w: EspnStat) => w.statSourceId === EspnStatSource.Actual
@@ -272,48 +300,98 @@ const mapToWeeklyResult = (
   };
 };
 
-const getStartingLineupTotal = (result?: WeeklyResult): number => {
+interface ITotals {
+  startingTotal: number;
+  benchTotal: number;
+  startingMinutes: number;
+  benchMinutes: number;
+}
+
+const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
   if (result) {
-    return (
-      result.qb.total +
-      result.rb1.total +
-      result.rb2.total +
-      result.wr1.total +
-      result.wr2.total +
-      result.wr3.total +
-      result.te.total +
-      result.flex.total +
-      result.superFlex.total
-    );
+    return {
+      startingTotal:
+        result.qb.total +
+        result.rb1.total +
+        result.rb2.total +
+        result.wr1.total +
+        result.wr2.total +
+        result.wr3.total +
+        result.te.total +
+        result.flex.total +
+        result.superFlex.total,
+      benchTotal: result.bench.reduce(
+        (total: number, benchPlayer: PlayerResult) => total + benchPlayer.total,
+        0
+      ),
+      startingMinutes:
+        result.qb.minutes +
+        result.rb1.minutes +
+        result.rb2.minutes +
+        result.wr1.minutes +
+        result.wr2.minutes +
+        result.wr3.minutes +
+        result.te.minutes +
+        result.flex.minutes +
+        result.superFlex.minutes,
+      benchMinutes: result.bench.reduce(
+        (minutes: number, benchPlayer: PlayerResult) =>
+          minutes + benchPlayer.minutes,
+        0
+      ),
+    };
   }
-  return 0;
 };
 
 const entriesToWeeklyResult = (
   entries: EspnLineupEntry[],
-  weekId: number
+  weekId: number,
+  minutesMap: MinutesMap
 ): WeeklyResult => {
   const result = entries
-    .map(mapToPlayerResult)
+    .map((e) => mapToPlayerResult(e, minutesMap))
     .sort((a: PlayerResult, b: PlayerResult) => b.total - a.total)
     .reduce(mapToWeeklyResult, {
       weekId,
       bench: [],
       startingTotal: 0,
       benchTotal: 0,
+      startingMinutes: 0,
+      benchMinutes: 0,
     });
+
+  const {
+    startingTotal,
+    benchTotal,
+    startingMinutes,
+    benchMinutes,
+  } = getStartingLineupTotal(result);
 
   return {
     ...result,
-    startingTotal: getStartingLineupTotal(result),
-    benchTotal: result.bench.reduce(
-      (total: number, benchPlayer: PlayerResult) => total + benchPlayer.total,
-      0
-    ),
+    startingTotal,
+    benchTotal,
+    startingMinutes,
+    benchMinutes,
   };
 };
 
-const convertEspnResult = (espnResult: EspnResult) => {
+const convertEspnResult = (
+  espnResult: EspnResult,
+  espnEventResult?: IEspnEventResult
+) => {
+  const minRemainingMap: MinutesMap = espnEventResult?.events.reduce(
+    (outerMap: MinutesMap, event: IEspnEvent) =>
+      event.competitors.reduce(
+        (innerMap: MinutesMap, comp: IEspnCompetitor) => {
+          innerMap[comp.id] = 60.0 * ((100.0 - event.percentComplete) / 100.0);
+          return innerMap;
+        },
+        outerMap
+      ),
+    {}
+  );
+
   const result: Team[] = teams.map((t: Team) => {
     const { firstName, lastName } = espnResult.members.find(
       (m: EspnMember) => m.id === t.guid
@@ -333,12 +411,14 @@ const convertEspnResult = (espnResult: EspnResult) => {
           if (em.away.teamId === t.id) {
             return entriesToWeeklyResult(
               em.away.rosterForCurrentScoringPeriod.entries,
-              em.matchupPeriodId
+              em.matchupPeriodId,
+              minRemainingMap
             );
           }
           return entriesToWeeklyResult(
             em.home.rosterForCurrentScoringPeriod.entries,
-            em.matchupPeriodId
+            em.matchupPeriodId,
+            minRemainingMap
           );
         }
       );
@@ -355,16 +435,33 @@ const convertEspnResult = (espnResult: EspnResult) => {
   return result;
 };
 
-const getTeams = async (weekId: number): Promise<Team[]> => {
+const getTeams = async (
+  weekId: number,
+  repopulating: boolean
+): Promise<Team[]> => {
+  const { start, stop } = schedule.find((x) => x.weekId === weekId);
+
   const statsUrl = `https://fantasy.espn.com/apis/v3/games/ffl/seasons/2020/segments/0/leagues/1062294?scoringPeriodId=${weekId}&view=modular&view=mNav&view=mMatchupScore&view=mScoreboard&view=mTopPerformers&view=mTeam`;
-  const response = await fetch(statsUrl, {
-    headers: {
-      cookie,
-    },
-  });
-  const json = await response.json();
-  const teams = convertEspnResult(json);
-  return teams;
+  const eventsUrl = `https://site.api.espn.com/apis/fantasy/v2/games/ffl/games?useMap=true&dates=${start.format(
+    'YYYYMMDD'
+  )}-${stop.format('YYYYMMDD')}&pbpOnly=true`;
+
+  if (!repopulating) {
+    const responses = await Promise.all([
+      fetch(statsUrl, { headers: { cookie } }),
+      fetch(eventsUrl),
+    ]);
+    const [statsJson, eventsJson] = await Promise.all(
+      responses.map((x) => x.json())
+    );
+    const teams = convertEspnResult(statsJson, eventsJson);
+    return teams;
+  } else {
+    const response = await fetch(statsUrl, { headers: { cookie } });
+    const json = await response.json();
+    const teams = convertEspnResult(json);
+    return teams;
+  }
 };
 
 const repopulateCache = async (): Promise<Team[]> => {
@@ -374,7 +471,7 @@ const repopulateCache = async (): Promise<Team[]> => {
     Promise.all(
       schedule
         .filter((x: IScheduleItem) => x.start < now)
-        .map((item: IScheduleItem) => getTeams(item.weekId))
+        .map((item: IScheduleItem) => getTeams(item.weekId, true))
     )
       .then((result: Team[][]) => {
         const teams = result.reduce(
@@ -424,7 +521,7 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
         (sch: IScheduleItem) => sch.start < now && sch.stop > now
       )?.weekId;
       if (weekId) {
-        const refreshed = await getTeams(weekId);
+        const refreshed = await getTeams(weekId, false);
         const teams = refreshed.map(
           (team: Team): Team => ({
             ...team,

@@ -28,13 +28,20 @@ interface ITeamStanding {
 }
 
 const Standings: FC<IStandingsProps> = ({ teams }) => (
-  <Box direction='column'>
+  <Box
+    direction='column'
+    flex
+    elevation='small'
+    round='small'
+    pad='small'
+    width={{ min: '400px', max: '600px' }}
+  >
     <Heading level={3}>Standings</Heading>
     <Table>
       <TableHeader>
         <TableRow>
           <TableCell scope='col' border='bottom'>
-            Rank
+            #
           </TableCell>
           <TableCell scope='col' border='bottom' colSpan={2}>
             Team
