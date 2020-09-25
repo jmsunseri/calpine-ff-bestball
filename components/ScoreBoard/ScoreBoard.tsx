@@ -46,7 +46,7 @@ const ScoreBoard: FC<IScoreBoardProps> = ({ teams }) => {
       pad='small'
       width={{ min: '400px', max: '600px' }}
     >
-      <Heading level={3}>Score Board</Heading>
+      <Heading level={3}>Score Board Week {weekId}</Heading>
       <Table>
         <TableHeader>
           <TableRow>
@@ -60,7 +60,7 @@ const ScoreBoard: FC<IScoreBoardProps> = ({ teams }) => {
               Score
             </TableCell>
             <TableCell scope='col' border='bottom'>
-              Minutes
+              Min
             </TableCell>
           </TableRow>
         </TableHeader>

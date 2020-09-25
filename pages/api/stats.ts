@@ -27,6 +27,7 @@ export interface PlayerResult {
   total: number;
   position: Position;
   minutes: number;
+  projection: number;
 }
 
 export interface IScheduleItem {
@@ -69,9 +70,11 @@ export interface WeeklyResult {
   superFlex?: PlayerResult;
   bench: PlayerResult[];
   startingTotal: number;
+  projectedStartingTotal?: number;
   startingMinutes: number;
   benchTotal: number;
   benchMinutes: number;
+  projectedBenchTotal?: number;
 }
 
 interface EspnMember {
@@ -199,6 +202,11 @@ const mapToPlayerResult = (
         (w: EspnStat) => w.statSourceId === EspnStatSource.Actual
       )?.appliedTotal || 0
     : 0,
+  projection: entry?.playerPoolEntry?.player.stats?.length
+    ? entry?.playerPoolEntry?.player.stats.find(
+        (w: EspnStat) => w.statSourceId === EspnStatSource.Prediction
+      )?.appliedTotal || 0
+    : 0,
 });
 
 const mapToWeeklyResult = (
@@ -305,6 +313,8 @@ interface ITotals {
   benchTotal: number;
   startingMinutes: number;
   benchMinutes: number;
+  projectedStartingTotal?: number;
+  projectedBenchTotal?: number;
 }
 
 const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
@@ -339,6 +349,21 @@ const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
           minutes + benchPlayer.minutes,
         0
       ),
+      projectedStartingTotal:
+        result.qb.projection +
+        result.rb1.projection +
+        result.rb2.projection +
+        result.wr1.projection +
+        result.wr2.projection +
+        result.wr3.projection +
+        result.te.projection +
+        result.flex.projection +
+        result.superFlex.projection,
+      projectedBenchTotal: result.bench.reduce(
+        (total: number, benchPlayer: PlayerResult) =>
+          total + benchPlayer.projection,
+        0
+      ),
     };
   }
 };
@@ -365,6 +390,8 @@ const entriesToWeeklyResult = (
     benchTotal,
     startingMinutes,
     benchMinutes,
+    projectedBenchTotal,
+    projectedStartingTotal,
   } = getStartingLineupTotal(result);
 
   return {
@@ -373,6 +400,8 @@ const entriesToWeeklyResult = (
     benchTotal,
     startingMinutes,
     benchMinutes,
+    projectedBenchTotal,
+    projectedStartingTotal,
   };
 };
 
@@ -437,7 +466,7 @@ const convertEspnResult = (
 
 const getTeams = async (
   weekId: number,
-  repopulating: boolean
+  getMinutes: boolean
 ): Promise<Team[]> => {
   const { start, stop } = schedule.find((x) => x.weekId === weekId);
 
@@ -446,7 +475,7 @@ const getTeams = async (
     'YYYYMMDD'
   )}-${stop.format('YYYYMMDD')}&pbpOnly=true`;
 
-  if (!repopulating) {
+  if (getMinutes) {
     const responses = await Promise.all([
       fetch(statsUrl, { headers: { cookie } }),
       fetch(eventsUrl),
@@ -467,11 +496,17 @@ const getTeams = async (
 const repopulateCache = async (): Promise<Team[]> => {
   console.log('repopulating', dayjs().format('hh:mm:ss'));
   var now = dayjs();
+  const weekId = schedule.find(
+    (sch: IScheduleItem) => sch.start < now && sch.stop > now
+  )?.weekId;
+
   const promise = new Promise<Team[]>((resolve, reject) => {
     Promise.all(
       schedule
         .filter((x: IScheduleItem) => x.start < now)
-        .map((item: IScheduleItem) => getTeams(item.weekId, true))
+        .map((item: IScheduleItem) =>
+          getTeams(item.weekId, item.weekId === weekId)
+        )
     )
       .then((result: Team[][]) => {
         const teams = result.reduce(
@@ -509,6 +544,7 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
       if (process.env.NODE_ENV === 'production') {
         const teams = await repopulateCache();
         const newCache: IResult = { teams, updatedDate: dayjs() };
+        console.warn('cache was empty repopulating');
         lruCache.set('cache', newCache);
         res.status(200).json(newCache);
       } else {
@@ -521,7 +557,7 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
         (sch: IScheduleItem) => sch.start < now && sch.stop > now
       )?.weekId;
       if (weekId) {
-        const refreshed = await getTeams(weekId, false);
+        const refreshed = await getTeams(weekId, true);
         const teams = refreshed.map(
           (team: Team): Team => ({
             ...team,
@@ -536,6 +572,7 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
           })
         );
         const newCache: IResult = { teams, updatedDate: dayjs() };
+        console.log(`refreshing cache for week ${weekId}`);
         lruCache.set('cache', newCache);
         res.status(200).json(newCache);
       } else {
