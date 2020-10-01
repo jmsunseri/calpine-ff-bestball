@@ -7,7 +7,6 @@ const teamsToLineChartData = (teams: Team[]) => {
   return teams.map((t) => ({
     id: t.firstName,
     data: [
-      { x: '2020-09-05', y: 0 },
       ...schedule.reduce((dataPoints: any[], s) => {
         if (t.weeklyResults.find((x) => x.weekId === s.weekId)) {
           return [
