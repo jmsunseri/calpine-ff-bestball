@@ -28,7 +28,7 @@ const useEspn: UseEspnHook = () => {
       }
     },
     {
-      refreshInterval: 15000,
+      refreshInterval: 30000,
     }
   );
 
