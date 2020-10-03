@@ -16,12 +16,12 @@ const useEspn: UseEspnHook = () => {
 
   const { data: fullRefresh, isValidating: fullRefreshLoading } = useSWR<
     IResult
-  >('/api/stats/all', fetcher, {
+  >('/api/all', fetcher, {
     refreshInterval: 86400000,
   });
 
   const { data: refreshed } = useSWR<IResult>(
-    '/api/stats/this-week',
+    '/api/this-week',
     (url: string) => {
       if (fullRefresh && !fullRefreshLoading) {
         return fetch(url).then((r) => r.json());
