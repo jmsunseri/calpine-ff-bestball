@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Box, Heading, Grommet, Select, Text, Image } from 'grommet';
 import AppBar from '@components/AppBar/AppBar';
 import theme from 'theme';
-import { Team } from '@api/stats';
+import { Team } from 'api/models';
 import useEspn from '@hooks/useEspn';
 import BuyMeCoffee from '@components/BuyMeCoffee/BuyMeCoffee';
 import LineChart from '@components/LineChart/LineChart';
@@ -11,8 +11,8 @@ import WeekStats from '@components/WeekStats/WeekStats';
 import Standings from '@components/Standings/Standings';
 import HighScores from '@components/HighScores/HighScores';
 
-import styles from './index.module.scss';
 import ScoreBoard from '@components/ScoreBoard/ScoreBoard';
+import dayjs from 'dayjs';
 
 const weekOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
@@ -67,7 +67,7 @@ const Home: FC = () => {
             </Box>
 
             <Text size='xsmall'>
-              Updated: {result?.updatedDate?.format('h:mm:ss A')}
+              Updated: {dayjs(result?.updatedDate).format('h:mm:ss A')}
             </Text>
           </AppBar>
           <Box
@@ -127,9 +127,7 @@ const Home: FC = () => {
               height='900px'
               flex
             >
-              {/* <div className={styles.lineChartContainer}> */}
               <LineChart teams={result.teams} />
-              {/* </div> */}
             </Box>
           </Box>
           <Box

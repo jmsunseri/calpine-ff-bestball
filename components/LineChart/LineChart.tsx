@@ -1,7 +1,7 @@
 import { ResponsiveLine } from '@nivo/line';
-import { Team, WeeklyResult, schedule } from '@api/stats';
 import { FC } from 'react';
 import { Heading, Box, Avatar } from 'grommet';
+import { schedule, Team, WeeklyResult } from '@api/models';
 
 const teamsToLineChartData = (teams: Team[]) => {
   return teams.map((t) => ({

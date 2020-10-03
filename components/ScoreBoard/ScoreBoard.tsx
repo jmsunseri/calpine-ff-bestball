@@ -1,4 +1,3 @@
-import { Team, WeeklyResult } from '@api/stats';
 import {
   Box,
   Heading,
@@ -10,9 +9,9 @@ import {
   Avatar,
 } from 'grommet';
 import React, { FC } from 'react';
-import { schedule } from '@api/stats';
-import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
+import { getCurrentWeek } from '@api/utils';
+import { Team } from '@api/models';
 
 const FancyText = dynamic(() => import('@components/FancyText/FancyText'), {
   ssr: false,
@@ -33,10 +32,7 @@ interface ITeamStanding {
 }
 
 const ScoreBoard: FC<IScoreBoardProps> = ({ teams }) => {
-  var now = dayjs();
-
-  const weekId = schedule.find((sch) => sch.start < now && sch.stop > now)
-    ?.weekId;
+  const weekId = getCurrentWeek();
 
   return (
     <Box

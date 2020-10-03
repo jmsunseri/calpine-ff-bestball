@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import dynamic from 'next/dynamic';
-import { WeeklyResult, PlayerResult } from '@api/stats';
-import { Position } from '@api/stats';
+import { WeeklyResult, PlayerResult } from '@api/models';
+import { Position } from '@api/espn-models';
 import {
   Heading,
   TableBody,
@@ -50,10 +50,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>QB</TableCell>
           <TableCell>
-            <FancyText text={result?.qb.total.toFixed(2)} />
+            <FancyText text={result?.qb.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.qb.minutes.toFixed(0)} />
+            <FancyText text={result?.qb.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.qb.projection?.toFixed(0)} />
@@ -65,10 +65,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>RB</TableCell>
           <TableCell>
-            <FancyText text={result?.rb1.total.toFixed(2)} />
+            <FancyText text={result?.rb1.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.rb1.minutes.toFixed(0)} />
+            <FancyText text={result?.rb1.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.rb1.projection?.toFixed(0)} />
@@ -80,10 +80,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>RB</TableCell>
           <TableCell>
-            <FancyText text={result?.rb2.total.toFixed(2)} />
+            <FancyText text={result?.rb2.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.rb2.minutes.toFixed(0)} />
+            <FancyText text={result?.rb2.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.rb2.projection?.toFixed(0)} />
@@ -95,10 +95,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <FancyText text={result?.wr1.total.toFixed(2)} />
+            <FancyText text={result?.wr1.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.wr1.minutes.toFixed(0)} />
+            <FancyText text={result?.wr1.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.wr1.projection?.toFixed(0)} />
@@ -110,10 +110,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <FancyText text={result?.wr2.total.toFixed(2)} />
+            <FancyText text={result?.wr2.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.wr2.minutes.toFixed(0)} />
+            <FancyText text={result?.wr2.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.wr2.projection?.toFixed(0)} />
@@ -125,10 +125,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>WR</TableCell>
           <TableCell>
-            <FancyText text={result?.wr3.total.toFixed(2)} />
+            <FancyText text={result?.wr3.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.wr3.minutes.toFixed(0)} />
+            <FancyText text={result?.wr3.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.wr3.projection?.toFixed(0)} />
@@ -140,10 +140,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>TE</TableCell>
           <TableCell>
-            <FancyText text={result?.te.total.toFixed(2)} />
+            <FancyText text={result?.te.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.te.minutes.toFixed(0)} />
+            <FancyText text={result?.te.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.te.projection?.toFixed(0)} />
@@ -155,10 +155,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell>Flex</TableCell>
           <TableCell>
-            <FancyText text={result?.flex.total.toFixed(2)} />
+            <FancyText text={result?.flex.total?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.flex.minutes.toFixed(0)} />
+            <FancyText text={result?.flex.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.flex.projection?.toFixed(0)} />
@@ -170,10 +170,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
           </TableCell>
           <TableCell border='bottom'>Super Flex</TableCell>
           <TableCell border='bottom'>
-            <FancyText text={result?.superFlex.total.toFixed(2)} />
+            <FancyText text={result?.superFlex.total?.toFixed(2)} />
           </TableCell>
           <TableCell border='bottom'>
-            <FancyText text={result?.superFlex.minutes.toFixed(0)} />
+            <FancyText text={result?.superFlex.minutes?.toFixed(0)} />
           </TableCell>
           <TableCell border='bottom'>
             <FancyText text={result?.superFlex.projection?.toFixed(0)} />
@@ -186,7 +186,7 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
             <FancyText text={result?.startingTotal?.toFixed(2)} />
           </TableCell>
           <TableCell>
-            <FancyText text={result?.startingMinutes.toFixed(0)} />
+            <FancyText text={result?.startingMinutes?.toFixed(0)} />
           </TableCell>
           <TableCell>
             <FancyText text={result?.projectedStartingTotal?.toFixed(0)} />
@@ -225,10 +225,10 @@ const WeekStats: FC<IWeekStatsProps> = ({ result }) => (
               <FancyText text={Position[benchPlayer.position].toString()} />
             </TableCell>
             <TableCell>
-              <FancyText text={benchPlayer.total.toFixed(2)} />
+              <FancyText text={benchPlayer.total?.toFixed(2)} />
             </TableCell>
             <TableCell>
-              <FancyText text={benchPlayer.minutes.toFixed(0)} />
+              <FancyText text={benchPlayer.minutes?.toFixed(0)} />
             </TableCell>
             <TableCell>
               <FancyText text={benchPlayer.projection?.toFixed(0)} />

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Team, WeeklyResult } from '@api/stats';
+import { Team, WeeklyResult } from '@api/models';
 import {
   Box,
   Heading,

@@ -6,7 +6,7 @@
     "paths": {
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@api/*": ["pages/api/*"]
+      "@api/*": ["api/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
