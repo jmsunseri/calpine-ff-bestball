@@ -249,8 +249,6 @@ const convertEspnResult = (
     {}
   );
 
-  console.log(minRemainingMap);
-
   const result: Team[] = teams.map((t: Team) => {
     const { firstName, lastName } = espnResult.members.find(
       (m: EspnMember) => m.id === t.guid
