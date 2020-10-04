@@ -7,6 +7,7 @@ const stats = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const teams = await repopulateCache();
     const result: IResult = { teams, fullRefresh: dayjs() };
+    console.log('all called');
     res.status(200).json(result);
   } catch (error) {
     console.log('error: ', error);
