@@ -16,7 +16,7 @@ const useEspn: UseEspnHook = () => {
 
   const { data: fullRefresh, isValidating: fullRefreshLoading } = useSWR<
     IResult
-  >('/api/all', fetcher, {
+  >('/api/stats', fetcher, {
     refreshInterval: 86400000,
   });
 

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { repopulateCache } from 'api/utils';
 import { IResult } from 'api/models';
 
-const all = async (req: NextApiRequest, res: NextApiResponse) => {
+const stats = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const teams = await repopulateCache();
     const result: IResult = { teams, fullRefresh: dayjs() };
@@ -14,4 +14,4 @@ const all = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default all;
+export default stats;
