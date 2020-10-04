@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dayjs from 'dayjs';
-import { IResult } from 'api/models';
-import { getCurrentWeek, getTeams } from 'api/utils';
+import { IResult } from '@api/models';
+import { getCurrentWeek, getTeams } from '@api/utils';
 
 const thisWeek = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

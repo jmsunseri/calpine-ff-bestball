@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { Box, Heading, Grommet, Select, Text, Image } from 'grommet';
 import AppBar from '@components/AppBar/AppBar';
 import theme from 'theme';
-import { Team } from 'api/models';
+import { Team } from '@api/models';
 import useEspn from '@hooks/useEspn';
 import BuyMeCoffee from '@components/BuyMeCoffee/BuyMeCoffee';
 import LineChart from '@components/LineChart/LineChart';
