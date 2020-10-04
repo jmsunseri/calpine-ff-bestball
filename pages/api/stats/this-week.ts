@@ -10,7 +10,7 @@ const thisWeek = async (req: NextApiRequest, res: NextApiResponse) => {
       const teams = await getTeams(weekId, true);
       const result: IResult = { teams, updatedDate: dayjs() };
       console.log('this-week called');
-      res.setHeader('cache-control', 's-maxage=30');
+      res.setHeader('cache-control', 's-maxage=29');
       res.status(200).json(result);
     }
   } catch (error) {
