@@ -17,6 +17,8 @@ export interface PlayerResult {
   position: Position;
   minutes: number;
   projection: number;
+  hasBall: boolean;
+  yardToGo: number;
 }
 
 export interface IScheduleItem {
@@ -98,4 +100,6 @@ export const schedule: IScheduleItem[] = [
   { weekId: 16, start: dayjs('2020-12-31'), stop: dayjs('2021-01-07') },
 ];
 
-export type MinutesMap = { [key: string]: number };
+export type MinutesMap = {
+  [key: string]: { hasBall: boolean; yardsToGo: number; minutes: number };
+};

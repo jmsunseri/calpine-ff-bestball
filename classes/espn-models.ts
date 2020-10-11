@@ -67,10 +67,18 @@ export interface IEspnEventResult {
   events: IEspnEvent[];
 }
 
+export interface IEspnPlay {
+  end: {
+    yardsToEndzone: number;
+    team: string;
+  };
+}
+
 export interface IEspnEvent {
   competitionId: string;
   percentComplete: number;
   competitors: IEspnCompetitor[];
+  lastPlay: IEspnPlay;
 }
 
 export interface IEspnCompetitor {

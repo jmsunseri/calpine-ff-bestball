@@ -23,6 +23,7 @@ import {
   WeeklyResult,
 } from './models';
 import { cookie } from './espn-models';
+import { truncateSync } from 'fs';
 
 export const mapToPlayerResult = (
   entry: EspnLineupEntry,
@@ -31,8 +32,14 @@ export const mapToPlayerResult = (
   name: entry.playerPoolEntry.player.fullName,
   position: entry?.playerPoolEntry?.player?.defaultPositionId,
   minutes: !!minutesMap
-    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`] || 0
+    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`]?.minutes || 0
     : 0,
+  hasBall: !!minutesMap
+    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`]?.hasBall
+    : false,
+  yardToGo: !!minutesMap
+    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`]?.yardsToGo
+    : 100,
   total: entry?.playerPoolEntry?.player.stats?.length
     ? entry?.playerPoolEntry?.player.stats.find(
         (w: EspnStat) => w.statSourceId === EspnStatSource.Actual
@@ -240,8 +247,11 @@ const convertEspnResult = (
     (outerMap: MinutesMap, event: IEspnEvent) =>
       event.competitors.reduce(
         (innerMap: MinutesMap, comp: IEspnCompetitor) => {
-          innerMap[comp.id] =
-            60.0 * ((100.0 - (event?.percentComplete || 0)) / 100.0);
+          innerMap[comp.id] = {
+            minutes: 60.0 * ((100.0 - (event?.percentComplete || 0)) / 100.0),
+            hasBall: event.lastPlay.end?.team === comp.id,
+            yardsToGo: event.lastPlay.end?.yardsToEndzone || 100,
+          };
           return innerMap;
         },
         outerMap

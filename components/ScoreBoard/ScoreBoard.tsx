@@ -93,14 +93,9 @@ const ScoreBoard: FC<IScoreBoardProps> = ({ teams }) => {
                   <FancyText text={teamStanding.total?.toFixed(2) || 0} />
                 </TableCell>
                 <TableCell>
-                  <FancyText
-                    text={
-                      (
-                        teamStanding.minRemaining +
-                        teamStanding.benchMinRemaining
-                      )?.toFixed(0) || '0'
-                    }
-                  />
+                  {(
+                    teamStanding.minRemaining + teamStanding.benchMinRemaining
+                  )?.toFixed(0) || '0'}
                 </TableCell>
               </TableRow>
             ))}
