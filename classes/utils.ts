@@ -50,6 +50,9 @@ export const mapToPlayerResult = (
         (w: EspnStat) => w.statSourceId === EspnStatSource.Prediction
       )?.appliedTotal || 0
     : 0,
+  gameOver: !!minutesMap
+    ? minutesMap[`${entry.playerPoolEntry.player.proTeamId}`]?.gameOver
+    : true,
 });
 
 const mapToWeeklyResult = (
@@ -251,6 +254,7 @@ const convertEspnResult = (
             minutes: 60.0 * ((100.0 - (event?.percentComplete || 0)) / 100.0),
             hasBall: event.lastPlay.end?.team === comp.id,
             yardsToGo: event.lastPlay.end?.yardsToEndzone || 100,
+            gameOver: event?.percentComplete === 100,
           };
           return innerMap;
         },

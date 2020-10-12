@@ -6,6 +6,7 @@ import theme from 'theme';
 interface HighlighterProps {
   yardsToGo: number;
   hasBall: boolean;
+  gameOver: boolean;
 }
 
 const customEdge = deepMerge(theme, {
@@ -16,7 +17,11 @@ const customEdge = deepMerge(theme, {
   },
 });
 
-const Highlighter: FC<HighlighterProps> = ({ yardsToGo, hasBall }) => {
+const Highlighter: FC<HighlighterProps> = ({
+  yardsToGo,
+  hasBall,
+  gameOver,
+}) => {
   return (
     <TableRow>
       <TableCell colSpan={5}>
@@ -30,7 +35,7 @@ const Highlighter: FC<HighlighterProps> = ({ yardsToGo, hasBall }) => {
             round='xsmall'
             values={[0, 100 - yardsToGo]}
             color={
-              hasBall
+              hasBall && !gameOver
                 ? 100 - yardsToGo > 79
                   ? 'status-critical'
                   : 'status-ok'

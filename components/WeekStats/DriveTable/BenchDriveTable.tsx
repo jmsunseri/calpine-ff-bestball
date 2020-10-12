@@ -20,6 +20,7 @@ const BenchDriveTable: FC<DriveTableProps> = ({ weeklyResult }) => {
           <Highlighter
             yardsToGo={benchPlayer.yardToGo}
             hasBall={benchPlayer.hasBall}
+            gameOver={benchPlayer.gameOver}
           />
         ))}
       </TableBody>

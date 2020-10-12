@@ -19,6 +19,7 @@ export interface PlayerResult {
   projection: number;
   hasBall: boolean;
   yardToGo: number;
+  gameOver: boolean;
 }
 
 export interface IScheduleItem {
@@ -101,5 +102,10 @@ export const schedule: IScheduleItem[] = [
 ];
 
 export type MinutesMap = {
-  [key: string]: { hasBall: boolean; yardsToGo: number; minutes: number };
+  [key: string]: {
+    hasBall: boolean;
+    yardsToGo: number;
+    minutes: number;
+    gameOver: boolean;
+  };
 };
