@@ -98,7 +98,7 @@ export const schedule: IScheduleItem[] = [
   { weekId: 13, start: dayjs('2020-12-03'), stop: dayjs('2020-12-10') },
   { weekId: 14, start: dayjs('2020-12-10'), stop: dayjs('2020-12-17') },
   { weekId: 15, start: dayjs('2020-12-17'), stop: dayjs('2020-12-24') },
-  { weekId: 16, start: dayjs('2020-12-31'), stop: dayjs('2021-01-07') },
+  { weekId: 16, start: dayjs('2020-12-24'), stop: dayjs('2021-12-31') },
 ];
 
 export type MinutesMap = {
