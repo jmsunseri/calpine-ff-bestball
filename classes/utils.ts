@@ -167,10 +167,12 @@ const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
         result.te.total +
         result.flex.total +
         result.superFlex.total,
-      benchTotal: result.bench.reduce(
-        (total: number, benchPlayer: PlayerResult) => total + benchPlayer.total,
-        0
-      ),
+      benchTotal:
+        result.bench?.reduce(
+          (total: number, benchPlayer: PlayerResult) =>
+            total + benchPlayer.total,
+          0
+        ) || 0,
       startingMinutes:
         result.qb.minutes +
         result.rb1.minutes +
@@ -181,11 +183,12 @@ const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
         result.te.minutes +
         result.flex.minutes +
         result.superFlex.minutes,
-      benchMinutes: result.bench.reduce(
-        (minutes: number, benchPlayer: PlayerResult) =>
-          minutes + benchPlayer.minutes,
-        0
-      ),
+      benchMinutes:
+        result.bench?.reduce(
+          (minutes: number, benchPlayer: PlayerResult) =>
+            minutes + benchPlayer.minutes,
+          0
+        ) || 0,
       projectedStartingTotal:
         result.qb.projection +
         result.rb1.projection +
@@ -196,11 +199,12 @@ const getStartingLineupTotal = (result?: WeeklyResult): ITotals => {
         result.te.projection +
         result.flex.projection +
         result.superFlex.projection,
-      projectedBenchTotal: result.bench.reduce(
-        (total: number, benchPlayer: PlayerResult) =>
-          total + benchPlayer.projection,
-        0
-      ),
+      projectedBenchTotal:
+        result.bench?.reduce(
+          (total: number, benchPlayer: PlayerResult) =>
+            total + benchPlayer.projection,
+          0
+        ) || 0,
     };
   }
 };
@@ -325,11 +329,13 @@ export const getTeams = async (
     const [statsJson, eventsJson] = await Promise.all(
       responses.map((x) => x.json())
     );
+    console.log('stats', statsJson, 'events', eventsJson);
     const teams = convertEspnResult(statsJson, eventsJson);
     return teams;
   } else {
     const response = await fetch(statsUrl, { headers: { cookie } });
     const json = await response.json();
+
     const teams = convertEspnResult(json);
     return teams;
   }
@@ -341,8 +347,8 @@ export const repopulateCache = async (): Promise<Team[]> => {
     Promise.all(
       schedule
         .filter((x: IScheduleItem) => x.weekId <= weekId)
-        .map((item: IScheduleItem) =>
-          getTeams(item.weekId, item.weekId === weekId)
+        .map(
+          (item: IScheduleItem) => getTeams(item.weekId, false) // item.weekId === weekId)
         )
     )
       .then((result: Team[][]) => {
